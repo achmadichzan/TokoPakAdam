@@ -60,6 +60,11 @@ dependencies {
     ksp("androidx.room:room-compiler:2.8.4")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+    implementation(libs.androidx.material3.adaptive.navigation3)
+    implementation(libs.kotlinx.serialization.core)
 
     implementation("androidx.compose.material:material-icons-extended-android:1.7.8")
 

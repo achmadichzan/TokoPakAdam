@@ -19,36 +19,28 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun HomeTopBar() {
+fun HomeTopBar(onMenuClick: () -> Unit = {}) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .statusBarsPadding()
-            .padding(vertical = 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(vertical = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        IconButton(onClick = { /* TODO: Open Drawer */ }) {
+        IconButton(onClick = onMenuClick) {
             Icon(Icons.Default.Menu, contentDescription = "Menu", tint = TextBlack)
         }
 
         // Title with Colored Span simulation
         Row {
+            Text(text = "Kasir ", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = TextBlack)
             Text(
-                text = "Kasir ",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = TextBlack
-            )
-            Text(
-                text = "Telur & Tahu",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = PrimaryOrange
+                    text = "Telur & Tahu",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = PrimaryOrange
             )
         }
 
-        IconButton(onClick = { /* TODO: Toggle Dark Mode */ }) {
+        IconButton(onClick = { /* TODO: Toggle Dark Mode */}) {
             Icon(Icons.Default.Nightlight, contentDescription = "Dark Mode", tint = TextBlack)
         }
     }
