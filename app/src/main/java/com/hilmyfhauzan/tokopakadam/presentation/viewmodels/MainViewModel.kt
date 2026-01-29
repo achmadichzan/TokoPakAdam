@@ -70,6 +70,10 @@ class MainViewModel(private val insertTransactionUseCase: InsertTransactionUseCa
         }
     }
 
+    fun clearAllTransaction() {
+        _uiState.update { it.copy(quantities = emptyMap(), cashInput = 0L) }
+    }
+
     // 5. Tombol Shortcut "1/2 Rak"
     fun onHalfTrayClick() {
         if (uiState.value.selectedProduct.isEgg) {
