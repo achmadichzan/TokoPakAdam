@@ -6,7 +6,9 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,7 +24,9 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,9 +46,14 @@ import com.hilmyfhauzan.tokopakadam.presentation.viewmodels.MainViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun HomeScreen(viewModel: MainViewModel = koinViewModel()) {
+fun HomeScreen(viewModel: MainViewModel = koinViewModel(), widthSizeClass: WindowWidthSizeClass) {
         val state by viewModel.uiState.collectAsStateWithLifecycle()
         var isNumpadVisible by remember { mutableStateOf(true) }
+
+        val isTablet = widthSizeClass == WindowWidthSizeClass.Expanded
+
+        SystemBarsVisibility(isTablet)
+
         val nestedScrollConnection = remember {
                 object : NestedScrollConnection {
                         override fun onPreScroll(
@@ -61,76 +70,225 @@ fun HomeScreen(viewModel: MainViewModel = koinViewModel()) {
                 }
         }
 
-        Scaffold(containerColor = Color.White, topBar = { HomeTopBar() }) { paddingValues ->
+        Scaffold(containerColor = Color.White, topBar = { if (!isTablet) HomeTopBar() }) {
+                paddingValues ->
                 Box(
                         modifier =
                                 Modifier.padding(paddingValues)
                                         .fillMaxSize()
                                         .padding(horizontal = 16.dp)
-                                        .nestedScroll(nestedScrollConnection)
+                                        .let {
+                                                if (!isTablet)
+                                                        it.nestedScroll(nestedScrollConnection)
+                                                else it
+                                        }
                 ) {
-                        // Top Content
-                        Column(
-                                verticalArrangement = Arrangement.spacedBy(16.dp),
-                                modifier =
-                                        Modifier.align(Alignment.TopCenter)
-                                                .verticalScroll(rememberScrollState())
-                        ) {
-                                // 1. Product Selector Tabs
-                                ProductSelector(
-                                        selectedType = state.selectedProduct,
-                                        onProductSelected = viewModel::onProductSelected
-                                )
-
-                                TransactionSummarySection(
-                                        state = state,
-                                        onActiveInputChanged = viewModel::setActiveInput,
-                                        onClearAll = viewModel::clearAllTransaction
-                                )
-                        }
-
-                        // Bottom Content (Numpad & Button)
-                        AnimatedVisibility(
-                                visible = isNumpadVisible,
-                                enter = slideInVertically { it },
-                                exit = slideOutVertically { it },
-                                modifier = Modifier.align(Alignment.BottomCenter)
-                        ) {
-                                Column(
-                                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        if (isTablet) {
+                                // Tablet Layout (Split View)
+                                Row(
+                                        modifier = Modifier.fillMaxSize(),
+                                        horizontalArrangement = Arrangement.spacedBy(24.dp)
                                 ) {
-                                        NumpadSection(
-                                                onNumberClick = viewModel::onNumpadClick,
-                                                onBackspaceClick = viewModel::onBackspaceClick,
-                                                onClearClick = viewModel::onClearClick,
-                                                onHalfTrayClick = viewModel::onHalfTrayClick,
-                                                onOneTrayClick = viewModel::onOneTrayClick
-                                        )
-
-                                        // 4. Save Button
-                                        Button(
-                                                onClick = { viewModel.saveTransaction() },
-                                                modifier = Modifier.fillMaxWidth().height(56.dp),
-                                                colors =
-                                                        ButtonDefaults.buttonColors(
-                                                                containerColor = PrimaryOrange
-                                                        ),
-                                                shape = RoundedCornerShape(12.dp)
+                                        // Left Column: Transaction List
+                                        Column(
+                                                modifier =
+                                                        Modifier.weight(0.4f)
+                                                                .fillMaxHeight()
+                                                                .verticalScroll(
+                                                                        rememberScrollState()
+                                                                ),
+                                                verticalArrangement = Arrangement.spacedBy(16.dp)
                                         ) {
-                                                Icon(
-                                                        Icons.Default.Check,
-                                                        contentDescription = null,
-                                                        tint = Color.White
+                                                ProductSelector(
+                                                        selectedType = state.selectedProduct,
+                                                        onProductSelected =
+                                                                viewModel::onProductSelected
                                                 )
-                                                Spacer(modifier = Modifier.width(8.dp))
-                                                Text(
-                                                        text = "SIMPAN",
-                                                        fontSize = 18.sp,
-                                                        fontWeight = FontWeight.Bold,
-                                                        color = Color.White
+
+                                                TransactionSummarySection(
+                                                        state = state,
+                                                        onActiveInputChanged =
+                                                                viewModel::setActiveInput,
+                                                        onClearAll = viewModel::clearAllTransaction
                                                 )
                                         }
+
+                                        // Right Column: Numpad
+                                        Box(
+                                                modifier = Modifier.weight(0.6f).fillMaxHeight(),
+                                                contentAlignment = Alignment.BottomCenter
+                                        ) {
+                                                Column(
+                                                        verticalArrangement =
+                                                                Arrangement.spacedBy(8.dp)
+                                                ) {
+                                                        NumpadSection(
+                                                                onNumberClick =
+                                                                        viewModel::onNumpadClick,
+                                                                onBackspaceClick =
+                                                                        viewModel::onBackspaceClick,
+                                                                onClearClick =
+                                                                        viewModel::onClearClick,
+                                                                onHalfTrayClick =
+                                                                        viewModel::onHalfTrayClick,
+                                                                onOneTrayClick =
+                                                                        viewModel::onOneTrayClick,
+                                                                onSave = viewModel::saveTransaction,
+                                                                isTablet = true,
+                                                                modifier =
+                                                                        Modifier.fillMaxWidth()
+                                                                                .height(280.dp)
+                                                        )
+
+                                                        // Save Button for Tablet
+                                                        Button(
+                                                                onClick = {
+                                                                        viewModel.saveTransaction()
+                                                                },
+                                                                modifier =
+                                                                        Modifier.fillMaxWidth()
+                                                                                .height(56.dp),
+                                                                colors =
+                                                                        ButtonDefaults.buttonColors(
+                                                                                containerColor =
+                                                                                        Color(
+                                                                                                0xFFF57C00
+                                                                                        ) // PrimaryOrange
+                                                                        ),
+                                                                shape = RoundedCornerShape(12.dp)
+                                                        ) {
+                                                                Icon(
+                                                                        Icons.Default.Check,
+                                                                        contentDescription = null,
+                                                                        tint = Color.White
+                                                                )
+                                                                Spacer(
+                                                                        modifier =
+                                                                                Modifier.width(8.dp)
+                                                                )
+                                                                Text(
+                                                                        text = "SIMPAN",
+                                                                        fontSize = 18.sp,
+                                                                        fontWeight =
+                                                                                FontWeight.Bold,
+                                                                        color = Color.White
+                                                                )
+                                                        }
+                                                }
+                                        }
                                 }
+                        } else {
+                                // Phone Layout (Original)
+                                // Top Content
+                                Column(
+                                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                                        modifier =
+                                                Modifier.align(Alignment.TopCenter)
+                                                        .verticalScroll(rememberScrollState())
+                                ) {
+                                        // 1. Product Selector Tabs
+                                        ProductSelector(
+                                                selectedType = state.selectedProduct,
+                                                onProductSelected = viewModel::onProductSelected
+                                        )
+
+                                        TransactionSummarySection(
+                                                state = state,
+                                                onActiveInputChanged = viewModel::setActiveInput,
+                                                onClearAll = viewModel::clearAllTransaction
+                                        )
+                                }
+
+                                // Bottom Content (Numpad & Button)
+                                AnimatedVisibility(
+                                        visible = isNumpadVisible,
+                                        enter = slideInVertically { it },
+                                        exit = slideOutVertically { it },
+                                        modifier = Modifier.align(Alignment.BottomCenter)
+                                ) {
+                                        Column(
+                                                verticalArrangement = Arrangement.spacedBy(16.dp),
+                                        ) {
+                                                NumpadSection(
+                                                        onNumberClick = viewModel::onNumpadClick,
+                                                        onBackspaceClick =
+                                                                viewModel::onBackspaceClick,
+                                                        onClearClick = viewModel::onClearClick,
+                                                        onHalfTrayClick =
+                                                                viewModel::onHalfTrayClick,
+                                                        onOneTrayClick = viewModel::onOneTrayClick,
+                                                        isTablet = false,
+                                                        modifier =
+                                                                Modifier.fillMaxWidth()
+                                                                        .height(280.dp)
+                                                )
+
+                                                // 4. Save Button
+                                                Button(
+                                                        onClick = { viewModel.saveTransaction() },
+                                                        modifier =
+                                                                Modifier.fillMaxWidth()
+                                                                        .height(56.dp),
+                                                        colors =
+                                                                ButtonDefaults.buttonColors(
+                                                                        containerColor =
+                                                                                PrimaryOrange
+                                                                ),
+                                                        shape = RoundedCornerShape(12.dp)
+                                                ) {
+                                                        Icon(
+                                                                Icons.Default.Check,
+                                                                contentDescription = null,
+                                                                tint = Color.White
+                                                        )
+                                                        Spacer(modifier = Modifier.width(8.dp))
+                                                        Text(
+                                                                text = "SIMPAN",
+                                                                fontSize = 18.sp,
+                                                                fontWeight = FontWeight.Bold,
+                                                                color = Color.White
+                                                        )
+                                                }
+                                        }
+                                }
+                        }
+                }
+        }
+}
+
+@Composable
+fun SystemBarsVisibility(visible: Boolean) {
+        val context = androidx.compose.ui.platform.LocalContext.current
+        val view = androidx.compose.ui.platform.LocalView.current
+        DisposableEffect(visible) {
+                val window = (context as? android.app.Activity)?.window
+                if (window != null) {
+                        val insetsController =
+                                androidx.core.view.WindowCompat.getInsetsController(window, view)
+                        if (visible) {
+                                insetsController.hide(
+                                        androidx.core.view.WindowInsetsCompat.Type.systemBars()
+                                )
+                                insetsController.systemBarsBehavior =
+                                        androidx.core.view.WindowInsetsControllerCompat
+                                                .BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                        } else {
+                                insetsController.show(
+                                        androidx.core.view.WindowInsetsCompat.Type.systemBars()
+                                )
+                        }
+                }
+                onDispose {
+                        val windowDispose = (context as? android.app.Activity)?.window
+                        if (windowDispose != null) {
+                                val insetsControllerDispose =
+                                        androidx.core.view.WindowCompat.getInsetsController(
+                                                windowDispose,
+                                                view
+                                        )
+                                insetsControllerDispose.show(
+                                        androidx.core.view.WindowInsetsCompat.Type.systemBars()
+                                )
                         }
                 }
         }
