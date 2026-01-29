@@ -6,6 +6,7 @@ import com.hilmyfhauzan.tokopakadam.domain.model.ProductType
 import com.hilmyfhauzan.tokopakadam.domain.model.Transaction
 import com.hilmyfhauzan.tokopakadam.domain.model.TransactionItem
 import com.hilmyfhauzan.tokopakadam.domain.usecase.InsertTransactionUseCase
+import com.hilmyfhauzan.tokopakadam.presentation.state.ActiveInput
 import com.hilmyfhauzan.tokopakadam.presentation.state.MainUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,9 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MainViewModel(
-    private val insertTransactionUseCase: InsertTransactionUseCase
-) : ViewModel() {
+class MainViewModel(private val insertTransactionUseCase: InsertTransactionUseCase) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MainUiState())
     val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
@@ -27,36 +26,65 @@ class MainViewModel(
         _uiState.update { it.copy(selectedProduct = type) }
     }
 
+    fun setActiveInput(input: ActiveInput) {
+        _uiState.update { it.copy(activeInput = input) }
+    }
+
     // 2. Logika Numpad (Angka 0-9, 00, 000)
     fun onNumpadClick(digit: String) {
-        updateCurrentQty { currentQtyString ->
-            if (currentQtyString == "0") digit else currentQtyString + digit
+        when (_uiState.value.activeInput) {
+            ActiveInput.QUANTITY -> {
+                updateCurrentQty { currentQtyString ->
+                    if (currentQtyString == "0") digit else currentQtyString + digit
+                }
+            }
+            ActiveInput.CASH -> {
+                updateCashInput { currentCashString ->
+                    if (currentCashString == "0") digit else currentCashString + digit
+                }
+            }
         }
     }
 
     // 3. Tombol Hapus (Backspace)
     fun onBackspaceClick() {
-        updateCurrentQty { currentString ->
-            if (currentString.length > 1) currentString.dropLast(1) else "0"
+        when (_uiState.value.activeInput) {
+            ActiveInput.QUANTITY -> {
+                updateCurrentQty { currentString ->
+                    if (currentString.length > 1) currentString.dropLast(1) else "0"
+                }
+            }
+            ActiveInput.CASH -> {
+                updateCashInput { currentCashString ->
+                    if (currentCashString.length > 1) currentCashString.dropLast(1) else "0"
+                }
+            }
         }
     }
 
     // 4. Tombol "C" (Clear All untuk produk terpilih)
     fun onClearClick() {
-        updateQtyValue(0.0)
+        when (_uiState.value.activeInput) {
+            ActiveInput.QUANTITY -> updateQtyValue(0.0)
+            ActiveInput.CASH -> _uiState.update { it.copy(cashInput = 0L) }
+        }
     }
 
     // 5. Tombol Shortcut "1/2 Rak"
     fun onHalfTrayClick() {
         if (uiState.value.selectedProduct.isEgg) {
-            updateQtyValue(15.0)
+            val currentQty = uiState.value.quantities[uiState.value.selectedProduct] ?: 0.0
+            val multiplier = if (currentQty > 0) currentQty else 1.0
+            updateQtyValue(multiplier * 15.0)
         }
     }
 
     // 6. Tombol Shortcut "1 Rak" (Reset jadi 1)
     fun onOneTrayClick() {
         if (uiState.value.selectedProduct.isEgg) {
-            updateQtyValue(30.0)
+            val currentQty = uiState.value.quantities[uiState.value.selectedProduct] ?: 0.0
+            val multiplier = if (currentQty > 0) currentQty else 1.0
+            updateQtyValue(multiplier * 30.0)
         }
     }
 
@@ -75,24 +103,26 @@ class MainViewModel(
             _uiState.update { it.copy(isLoading = true) }
 
             // Konversi Map Quantity ke List<TransactionItem> Domain
-            val items = currentState.quantities.filter { it.value > 0 }.map { (type, qty) ->
-                TransactionItem(
-                    productType = type,
-                    quantity = qty,
-                    unit = type.defaultUnit(),
-                    pricePerUnit = type.pricePerPiece, // Ambil langsung dari Enum
-                    subTotal = (qty * type.pricePerPiece).toLong()
-                )
-            }
+            val items =
+                    currentState.quantities.filter { it.value > 0 }.map { (type, qty) ->
+                        TransactionItem(
+                                productType = type,
+                                quantity = qty,
+                                unit = type.defaultUnit(),
+                                pricePerUnit = type.pricePerPiece, // Ambil langsung dari Enum
+                                subTotal = (qty * type.pricePerPiece).toLong()
+                        )
+                    }
 
-            val transaction = Transaction(
-                timestamp = System.currentTimeMillis(),
-                customerName = customerName?.ifBlank { null }, // Handle string kosong
-                items = items,
-                totalPrice = currentState.totalBelanja,
-                amountPaid = currentState.cashInput,
-                note = null // Bisa ditambah kalau ada field catatan
-            )
+            val transaction =
+                    Transaction(
+                            timestamp = System.currentTimeMillis(),
+                            customerName = customerName?.ifBlank { null }, // Handle string kosong
+                            items = items,
+                            totalPrice = currentState.totalBelanja,
+                            amountPaid = currentState.cashInput,
+                            note = null // Bisa ditambah kalau ada field catatan
+                    )
 
             try {
                 insertTransactionUseCase(transaction)
@@ -119,11 +149,12 @@ class MainViewModel(
         val currentQty = _uiState.value.quantities[currentType] ?: 0.0
 
         // Ubah double ke string tanpa .0 (misal 5.0 jadi "5")
-        val currentString = if (currentQty % 1.0 == 0.0) {
-            currentQty.toLong().toString()
-        } else {
-            currentQty.toString()
-        }
+        val currentString =
+                if (currentQty % 1.0 == 0.0) {
+                    currentQty.toLong().toString()
+                } else {
+                    currentQty.toString()
+                }
 
         val newString = transform(currentString)
         val newQty = newString.toDoubleOrNull() ?: 0.0
@@ -134,10 +165,16 @@ class MainViewModel(
     private fun updateQtyValue(value: Double) {
         _uiState.update { state ->
             // Update map quantities
-            val newQuantities = state.quantities.toMutableMap().apply {
-                put(state.selectedProduct, value)
-            }
+            val newQuantities =
+                    state.quantities.toMutableMap().apply { put(state.selectedProduct, value) }
             state.copy(quantities = newQuantities)
         }
+    }
+
+    private fun updateCashInput(transform: (String) -> String) {
+        val currentCash = _uiState.value.cashInput.toString()
+        val newCashString = transform(currentCash)
+        val newCash = newCashString.toLongOrNull() ?: 0L
+        _uiState.update { it.copy(cashInput = newCash) }
     }
 }
