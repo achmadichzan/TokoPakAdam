@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 enum class SalesUnit(val label: String) {
     GRAIN("Butir"), // Untuk Telur
-    PIECE("Biji")   // Untuk Tahu
+    PIECE("Bungkus") // Untuk Tahu
 }
