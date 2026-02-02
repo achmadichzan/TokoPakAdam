@@ -76,8 +76,6 @@ fun DrawerItem(icon: ImageVector, label: String, isSelected: Boolean, onClick: (
     Row(
         modifier =
             Modifier.fillMaxWidth()
-                .clickable(onClick = onClick)
-                .padding(vertical = 12.dp, horizontal = 8.dp)
                 .background(
                     if (isSelected)
                         MaterialTheme.colorScheme.primaryContainer.copy(
@@ -85,23 +83,21 @@ fun DrawerItem(icon: ImageVector, label: String, isSelected: Boolean, onClick: (
                         )
                     else Color.Transparent,
                     shape = MaterialTheme.shapes.small
-                ),
+                )
+                .padding(vertical = 16.dp, horizontal = 8.dp)
+                .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             imageVector = icon,
             contentDescription = label,
-            tint =
-                if (isSelected) MaterialTheme.colorScheme.primary
-                else MaterialTheme.colorScheme.onSurfaceVariant
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
             text = label,
             style = MaterialTheme.typography.bodyLarge,
-            color =
-                if (isSelected) MaterialTheme.colorScheme.primary
-                else MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface
         )
     }
 }
