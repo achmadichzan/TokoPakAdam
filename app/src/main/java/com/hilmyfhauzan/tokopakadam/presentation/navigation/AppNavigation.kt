@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.hilmyfhauzan.tokopakadam.presentation.screen.history.HistoryScreen
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.hilmyfhauzan.tokopakadam.presentation.screen.main.MainScreen
 import kotlinx.serialization.Serializable
 
@@ -26,14 +27,26 @@ fun AppNavigation(widthSizeClass: WindowWidthSizeClass) {
             MainScreen(
                 widthSizeClass = widthSizeClass,
                 onNavigate = { route ->
-                    nacController.navigate(route)
+                    nacController.navigate(route) {
+                        popUpTo(nacController.graph.startDestinationId) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 }
             )
         }
         composable<Route.History> {
             HistoryScreen(
                 onNavigate = { route ->
-                    nacController.navigate(route)
+                    nacController.navigate(route) {
+                        popUpTo(nacController.graph.startDestinationId) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 }
             )
         }
