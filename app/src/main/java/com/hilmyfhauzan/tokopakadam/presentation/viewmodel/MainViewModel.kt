@@ -1,4 +1,4 @@
-package com.hilmyfhauzan.tokopakadam.presentation.viewmodels
+package com.hilmyfhauzan.tokopakadam.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

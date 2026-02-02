@@ -1,4 +1,4 @@
-package com.hilmyfhauzan.tokopakadam.presentation.screens.main
+package com.hilmyfhauzan.tokopakadam.presentation.screen.main
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement

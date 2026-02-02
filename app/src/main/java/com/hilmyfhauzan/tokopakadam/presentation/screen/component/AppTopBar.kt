@@ -1,13 +1,13 @@
-package com.hilmyfhauzan.tokopakadam.presentation.screens.main
+package com.hilmyfhauzan.tokopakadam.presentation.screen.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Nightlight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -20,7 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun MainTopBar(onDrawerClick: () -> Unit) {
+fun AppTopBar(
+    title: String,
+    onDrawerClick: () -> Unit,
+    actions: @Composable RowScope.() -> Unit = {}
+) {
     Row(
         modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -34,28 +38,31 @@ fun MainTopBar(onDrawerClick: () -> Unit) {
             )
         }
 
-        // Title with Colored Span simulation
         Row {
-            Text(
-                text = "Toko ",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                text = "Pak Adam",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
-            )
+            if (title == "Toko Pak Adam") {
+                Text(
+                    text = "Toko ",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Text(
+                    text = "Pak Adam",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            } else {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
         }
 
-        IconButton(onClick = { /* TODO: Toggle Dark Mode */}) {
-            Icon(
-                Icons.Default.Nightlight,
-                contentDescription = "Dark Mode",
-                tint = MaterialTheme.colorScheme.onSurface
-            )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            actions()
         }
     }
 }

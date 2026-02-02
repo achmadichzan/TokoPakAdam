@@ -6,7 +6,7 @@ import com.hilmyfhauzan.tokopakadam.data.repository.TransactionRepositoryImpl
 import com.hilmyfhauzan.tokopakadam.domain.repository.TransactionRepository
 import com.hilmyfhauzan.tokopakadam.domain.usecase.GetTransactionsUseCase
 import com.hilmyfhauzan.tokopakadam.domain.usecase.InsertTransactionUseCase
-import com.hilmyfhauzan.tokopakadam.presentation.viewmodels.MainViewModel
+import com.hilmyfhauzan.tokopakadam.presentation.viewmodel.MainViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf

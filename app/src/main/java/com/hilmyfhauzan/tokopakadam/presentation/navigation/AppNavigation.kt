@@ -10,7 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.hilmyfhauzan.tokopakadam.presentation.screens.main.MainScreen
+import com.hilmyfhauzan.tokopakadam.presentation.screen.history.HistoryScreen
+import com.hilmyfhauzan.tokopakadam.presentation.screen.main.MainScreen
 import kotlinx.serialization.Serializable
 
 @Composable
@@ -30,7 +31,11 @@ fun AppNavigation(widthSizeClass: WindowWidthSizeClass) {
             )
         }
         composable<Route.History> {
-            PlaceholderScreen("History")
+            HistoryScreen(
+                onNavigate = { route ->
+                    nacController.navigate(route)
+                }
+            )
         }
         composable<Route.Stock> {
             PlaceholderScreen("Stock")

@@ -1,4 +1,4 @@
-package com.hilmyfhauzan.tokopakadam.presentation.screens.main
+package com.hilmyfhauzan.tokopakadam.presentation.screen.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.hilmyfhauzan.tokopakadam.presentation.navigation.Route
 
 @Composable
-fun DrawerContent(currentRoute: Route = Route.Main, onNavigate: (Route) -> Unit) {
+fun DrawerContent(currentRoute: Route, onNavigate: (Route) -> Unit) {
     ModalDrawerSheet(modifier = Modifier.width(240.dp)) {
         Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
             Text(

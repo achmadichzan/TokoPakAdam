@@ -1,4 +1,4 @@
-package com.hilmyfhauzan.tokopakadam.presentation.screens.main
+package com.hilmyfhauzan.tokopakadam.presentation.screen.main
 
 import android.app.Activity
 import androidx.compose.animation.AnimatedVisibility
@@ -20,12 +20,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Nightlight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
@@ -53,15 +54,18 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hilmyfhauzan.tokopakadam.presentation.navigation.Route
-import com.hilmyfhauzan.tokopakadam.presentation.viewmodels.MainViewModel
+import com.hilmyfhauzan.tokopakadam.presentation.screen.component.SideMenu
+import com.hilmyfhauzan.tokopakadam.presentation.screen.component.AppTopBar
+import com.hilmyfhauzan.tokopakadam.presentation.screen.component.DrawerContent
+import com.hilmyfhauzan.tokopakadam.presentation.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun MainScreen(
-        viewModel: MainViewModel = koinViewModel(),
-        widthSizeClass: WindowWidthSizeClass,
-        onNavigate: (Route) -> Unit
+    viewModel: MainViewModel = koinViewModel(),
+    widthSizeClass: WindowWidthSizeClass,
+    onNavigate: (Route) -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     var isNumpadVisible by remember { mutableStateOf(true) }
@@ -84,13 +88,13 @@ fun MainScreen(
     }
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-
     val scope = rememberCoroutineScope()
 
-    ModalNavigationDrawer(
+    SideMenu(
         drawerState = drawerState,
         drawerContent = {
             DrawerContent(
+                currentRoute = Route.Main,
                 onNavigate = { route ->
                     scope.launch { drawerState.close() }
                     onNavigate(route)
@@ -101,8 +105,21 @@ fun MainScreen(
         Scaffold(
             containerColor = MaterialTheme.colorScheme.background,
             topBar = {
-                if (!isTablet)
-                    MainTopBar(onDrawerClick = { scope.launch { drawerState.open() } })
+                if (!isTablet) {
+                    AppTopBar(
+                        title = "Toko Pak Adam",
+                        onDrawerClick = { scope.launch { drawerState.open() } },
+                        actions = {
+                            IconButton(onClick = { /* TODO: Toggle Dark Mode */ }) {
+                                Icon(
+                                    Icons.Default.Nightlight,
+                                    contentDescription = "Dark Mode",
+                                    tint = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                        }
+                    )
+                }
             }
         ) { paddingValues ->
             Box(
@@ -124,7 +141,8 @@ fun MainScreen(
                         // Left Column: Transaction List
                         Column(
                             modifier =
-                                Modifier.weight(0.4f)
+                                Modifier
+                                    .weight(0.4f)
                                     .fillMaxHeight()
                                     .verticalScroll(rememberScrollState()),
                             verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -143,7 +161,9 @@ fun MainScreen(
 
                         // Right Column: Numpad
                         Box(
-                            modifier = Modifier.weight(0.6f).fillMaxHeight(),
+                            modifier = Modifier
+                                .weight(0.6f)
+                                .fillMaxHeight(),
                             contentAlignment = Alignment.BottomCenter
                         ) {
                             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -155,13 +175,17 @@ fun MainScreen(
                                     onOneTrayClick = viewModel::onOneTrayClick,
                                     onSave = viewModel::saveTransaction,
                                     isTablet = true,
-                                    modifier = Modifier.fillMaxWidth().height(280.dp)
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(280.dp)
                                 )
 
                                 // Save Button for Tablet
                                 Button(
                                     onClick = { viewModel.saveTransaction() },
-                                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(56.dp),
                                     colors =
                                         ButtonDefaults.buttonColors(
                                             containerColor =
@@ -191,7 +215,8 @@ fun MainScreen(
                     Column(
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                         modifier =
-                            Modifier.align(Alignment.TopCenter)
+                            Modifier
+                                .align(Alignment.TopCenter)
                                 .verticalScroll(rememberScrollState())
                     ) {
                         // 1. Product Selector Tabs
@@ -222,13 +247,17 @@ fun MainScreen(
                                     onHalfTrayClick = viewModel::onHalfTrayClick,
                                     onOneTrayClick = viewModel::onOneTrayClick,
                                     isTablet = false,
-                                    modifier = Modifier.fillMaxWidth().height(280.dp)
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(280.dp)
                             )
 
                             // 4. Save Button
                             Button(
                                     onClick = { viewModel.saveTransaction() },
-                                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(56.dp),
                                     colors =
                                             ButtonDefaults.buttonColors(
                                                     containerColor =
