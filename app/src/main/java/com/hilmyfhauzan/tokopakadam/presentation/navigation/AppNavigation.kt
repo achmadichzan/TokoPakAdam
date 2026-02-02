@@ -1,0 +1,60 @@
+package com.hilmyfhauzan.tokopakadam.presentation.navigation
+
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.hilmyfhauzan.tokopakadam.presentation.screens.main.MainScreen
+import kotlinx.serialization.Serializable
+
+@Composable
+fun AppNavigation(widthSizeClass: WindowWidthSizeClass) {
+    val nacController = rememberNavController()
+
+    NavHost(
+        navController = nacController,
+        startDestination = Route.Main
+    ) {
+        composable<Route.Main> {
+            MainScreen(
+                widthSizeClass = widthSizeClass,
+                onNavigate = { route ->
+                    nacController.navigate(route)
+                }
+            )
+        }
+        composable<Route.History> {
+            PlaceholderScreen("History")
+        }
+        composable<Route.Stock> {
+            PlaceholderScreen("Stock")
+        }
+        composable<Route.Debt> {
+            PlaceholderScreen("Debt")
+        }
+        composable<Route.Settings> {
+            PlaceholderScreen("Settings")
+        }
+    }
+}
+
+@Composable
+fun PlaceholderScreen(text: String) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Text(text = text)
+    }
+}
+
+sealed interface Route {
+    @Serializable object Main : Route
+    @Serializable object History : Route
+    @Serializable object Stock : Route
+    @Serializable object Debt : Route
+    @Serializable object Settings : Route
+}

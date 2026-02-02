@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun MainTopBar() {
+fun MainTopBar(onDrawerClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -28,7 +28,7 @@ fun MainTopBar() {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        IconButton(onClick = { /* TODO: Open Drawer */ }) {
+        IconButton(onClick = onDrawerClick ) {
             Icon(Icons.Default.Menu, contentDescription = "Menu", tint = TextBlack)
         }
 
