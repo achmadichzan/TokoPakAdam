@@ -7,6 +7,7 @@ import com.hilmyfhauzan.tokopakadam.domain.repository.TransactionRepository
 import com.hilmyfhauzan.tokopakadam.domain.usecase.GetTransactionsUseCase
 import com.hilmyfhauzan.tokopakadam.domain.usecase.InsertTransactionUseCase
 import com.hilmyfhauzan.tokopakadam.presentation.viewmodel.MainViewModel
+import com.hilmyfhauzan.tokopakadam.presentation.viewmodel.HistoryViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
@@ -41,4 +42,5 @@ val appModule = module {
 
     // Nanti ViewModel juga didaftarkan di sini
     viewModelOf(::MainViewModel)
+    viewModelOf(::HistoryViewModel)
 }

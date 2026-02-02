@@ -22,67 +22,28 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.hilmyfhauzan.tokopakadam.domain.model.HistoryTransaction
-import com.hilmyfhauzan.tokopakadam.domain.model.TransactionStatus
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hilmyfhauzan.tokopakadam.presentation.navigation.Route
-import com.hilmyfhauzan.tokopakadam.presentation.screen.component.SideMenu
 import com.hilmyfhauzan.tokopakadam.presentation.screen.component.AppTopBar
 import com.hilmyfhauzan.tokopakadam.presentation.screen.component.DrawerContent
+import com.hilmyfhauzan.tokopakadam.presentation.screen.component.SideMenu
+import com.hilmyfhauzan.tokopakadam.presentation.viewmodel.HistoryViewModel
 import kotlinx.coroutines.launch
-
-val mockTransactionsStart = listOf(
-    HistoryTransaction(
-        id = "1",
-        date = "Hari Ini",
-        time = "09:45",
-        items = "2 Rak Telur Besar",
-        customerName = null,
-        paymentMethod = "Tunai",
-        amount = 124000L,
-        status = TransactionStatus.LUNAS
-    ),
-    HistoryTransaction(
-        id = "2",
-        date = "Hari Ini",
-        time = "08:30",
-        items = "1/2 Rak Telur Sedang, 10 Tahu",
-        customerName = "Warung Bu Siti",
-        paymentMethod = "Tunai",
-        amount = 45000L,
-        status = TransactionStatus.HUTANG
-    ),
-    HistoryTransaction(
-        id = "3",
-        date = "Hari Ini",
-        time = "17:15",
-        items = "5 Rak Telur Kecil",
-        customerName = null,
-        paymentMethod = "Transfer Bank",
-        amount = 285000L,
-        status = TransactionStatus.LUNAS
-    )
-)
-
-val mockTransactionsYesterday = listOf(
-    HistoryTransaction(
-        id = "4",
-        date = "Kemarin",
-        time = "14:20",
-        items = "1 Rak Telur Besar",
-        customerName = null,
-        paymentMethod = "Tunai",
-        amount = 62000L,
-        status = TransactionStatus.LUNAS
-    )
-)
+import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HistoryScreen(onNavigate: (Route) -> Unit) {
+fun HistoryScreen(
+    viewModel: HistoryViewModel = koinViewModel(),
+    onNavigate: (Route) -> Unit
+) {
+    val historyState by viewModel.historyState.collectAsStateWithLifecycle()
+    val totalSalesToday by viewModel.totalSalesToday.collectAsStateWithLifecycle()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -137,31 +98,35 @@ fun HistoryScreen(onNavigate: (Route) -> Unit) {
                 ) {
                     SearchBarSection()
                     FilterSection()
-                    LazyColumn(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(horizontal = 16.dp),
-                        contentPadding = PaddingValues(bottom = 100.dp)
-                    ) {
-                        item {
-                            SectionHeader(title = "TERBARU")
-                        }
-                        items(mockTransactionsStart) { transaction ->
-                            TransactionItemCard(transaction)
-                            Spacer(modifier = Modifier.height(12.dp))
-                        }
-
-                        item {
-                            SectionHeader(title = "KEMARIN")
-                        }
-                        items(mockTransactionsYesterday) { transaction ->
-                            TransactionItemCard(transaction)
-                            Spacer(modifier = Modifier.height(12.dp))
+                    
+                    if (historyState.isEmpty()) {
+                         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                             androidx.compose.material3.Text("Belum ada riwayat transaksi")
+                         }
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(horizontal = 16.dp),
+                            contentPadding = PaddingValues(bottom = 100.dp)
+                        ) {
+                            val groupedTransactions = historyState.groupBy { transaction -> transaction.date }
+                            
+                            groupedTransactions.forEach { (date, transactions) ->
+                                item {
+                                    SectionHeader(title = date.uppercase())
+                                }
+                                items(transactions) { transaction ->
+                                    TransactionItemCard(transaction)
+                                    Spacer(modifier = Modifier.height(12.dp))
+                                }
+                            }
                         }
                     }
                 }
 
                 BottomSummaryCard(
+                    totalSales = totalSalesToday,
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .padding(16.dp)

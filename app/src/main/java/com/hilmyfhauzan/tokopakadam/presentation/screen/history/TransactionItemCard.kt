@@ -110,11 +110,33 @@ fun TransactionItemCard(transaction: HistoryTransaction) {
                         modifier = Modifier.size(18.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = transaction.paymentMethod,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    Column {
+                        Text(
+                            text = transaction.paymentMethod,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        Spacer(modifier = Modifier.height(2.dp))
+                        Text(
+                            text = "Tunai: ${formatRupiah(transaction.cash)}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        if (transaction.remainingDebt > 0) {
+                            Text(
+                                text = "Sisa Hutang: ${formatRupiah(transaction.remainingDebt)}",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                        if (transaction.change > 0) {
+                            Text(
+                                text = "Kembalian: ${formatRupiah(transaction.change)}",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.tertiary
+                            )
+                        }
+                    }
                 }
 
                 Text(

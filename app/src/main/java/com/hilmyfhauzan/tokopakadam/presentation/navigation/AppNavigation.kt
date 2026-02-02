@@ -11,7 +11,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.hilmyfhauzan.tokopakadam.presentation.screen.history.HistoryScreen
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.hilmyfhauzan.tokopakadam.presentation.screen.main.MainScreen
 import kotlinx.serialization.Serializable
 

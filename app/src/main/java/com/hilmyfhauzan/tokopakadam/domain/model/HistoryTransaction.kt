@@ -8,5 +8,8 @@ data class HistoryTransaction(
     val customerName: String?,
     val paymentMethod: String, // "Tunai" or "Transfer Bank"
     val amount: Long,
+    val cash: Long,
+    val remainingDebt: Long,
+    val change: Long,
     val status: TransactionStatus
 )

@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.TrendingUp
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -24,9 +24,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hilmyfhauzan.tokopakadam.presentation.util.formatRupiah
 
 @Composable
-fun BottomSummaryCard(modifier: Modifier = Modifier) {
+fun BottomSummaryCard(
+    totalSales: Long,
+    modifier: Modifier = Modifier
+) {
     Card(
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.inverseSurface),
@@ -48,7 +52,7 @@ fun BottomSummaryCard(modifier: Modifier = Modifier) {
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Rp 169.000",
+                    text = formatRupiah(totalSales),
                     style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.inverseOnSurface
                 )
@@ -61,7 +65,7 @@ fun BottomSummaryCard(modifier: Modifier = Modifier) {
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Icon(
-                        imageVector = Icons.Default.TrendingUp,
+                        imageVector = Icons.AutoMirrored.Default.TrendingUp,
                         contentDescription = "Stats",
                         tint = MaterialTheme.colorScheme.inverseOnSurface
                     )
