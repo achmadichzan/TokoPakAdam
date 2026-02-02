@@ -23,7 +23,7 @@ class MainViewModel(private val insertTransactionUseCase: InsertTransactionUseCa
 
     // 1. Saat Tab Produk (Telur Kecil/Sedang/Besar) diklik
     fun onProductSelected(type: ProductType) {
-        _uiState.update { it.copy(selectedProduct = type) }
+        _uiState.update { it.copy(selectedProduct = type, isLastInputFromNumpad = false) }
     }
 
     fun setActiveInput(input: ActiveInput) {
@@ -37,6 +37,7 @@ class MainViewModel(private val insertTransactionUseCase: InsertTransactionUseCa
                 updateCurrentQty { currentQtyString ->
                     if (currentQtyString == "0") digit else currentQtyString + digit
                 }
+                _uiState.update { it.copy(isLastInputFromNumpad = true) }
             }
             ActiveInput.CASH -> {
                 updateCashInput { currentCashString ->
@@ -53,6 +54,7 @@ class MainViewModel(private val insertTransactionUseCase: InsertTransactionUseCa
                 updateCurrentQty { currentString ->
                     if (currentString.length > 1) currentString.dropLast(1) else "0"
                 }
+                _uiState.update { it.copy(isLastInputFromNumpad = true) }
             }
             ActiveInput.CASH -> {
                 updateCashInput { currentCashString ->
@@ -65,7 +67,10 @@ class MainViewModel(private val insertTransactionUseCase: InsertTransactionUseCa
     // 4. Tombol "C" (Clear All untuk produk terpilih)
     fun onClearClick() {
         when (_uiState.value.activeInput) {
-            ActiveInput.QUANTITY -> updateQtyValue(0.0)
+            ActiveInput.QUANTITY -> {
+                updateQtyValue(0.0)
+                _uiState.update { it.copy(isLastInputFromNumpad = false) }
+            }
             ActiveInput.CASH -> _uiState.update { it.copy(cashInput = 0L) }
         }
     }
@@ -78,8 +83,14 @@ class MainViewModel(private val insertTransactionUseCase: InsertTransactionUseCa
     fun onHalfTrayClick() {
         if (uiState.value.selectedProduct.isEgg) {
             val currentQty = uiState.value.quantities[uiState.value.selectedProduct] ?: 0.0
-            val multiplier = if (currentQty > 0) currentQty else 1.0
-            updateQtyValue(multiplier * 15.0)
+            val newQty =
+                    if (uiState.value.isLastInputFromNumpad) {
+                        currentQty * 15.0
+                    } else {
+                        currentQty + 15.0
+                    }
+            updateQtyValue(newQty)
+            _uiState.update { it.copy(isLastInputFromNumpad = false) }
         }
     }
 
@@ -87,8 +98,14 @@ class MainViewModel(private val insertTransactionUseCase: InsertTransactionUseCa
     fun onOneTrayClick() {
         if (uiState.value.selectedProduct.isEgg) {
             val currentQty = uiState.value.quantities[uiState.value.selectedProduct] ?: 0.0
-            val multiplier = if (currentQty > 0) currentQty else 1.0
-            updateQtyValue(multiplier * 30.0)
+            val newQty =
+                    if (uiState.value.isLastInputFromNumpad) {
+                        currentQty * 30.0
+                    } else {
+                        currentQty + 30.0
+                    }
+            updateQtyValue(newQty)
+            _uiState.update { it.copy(isLastInputFromNumpad = false) }
         }
     }
 

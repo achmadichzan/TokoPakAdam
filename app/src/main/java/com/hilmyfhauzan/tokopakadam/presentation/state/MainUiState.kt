@@ -11,7 +11,8 @@ data class MainUiState(
         val isLoading: Boolean = false,
         val isTransactionSaved: Boolean = false,
         val errorMessage: String? = null,
-        val activeInput: ActiveInput = ActiveInput.QUANTITY
+        val activeInput: ActiveInput = ActiveInput.QUANTITY,
+        val isLastInputFromNumpad: Boolean = false
 ) {
     // Computed Properties (Hitungan Otomatis untuk UI)
 
