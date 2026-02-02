@@ -22,39 +22,39 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun MainTopBar(onDrawerClick: () -> Unit) {
     Row(
-            modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(vertical = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+        modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(vertical = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         IconButton(onClick = onDrawerClick) {
             Icon(
-                    Icons.Default.Menu,
-                    contentDescription = "Menu",
-                    tint = MaterialTheme.colorScheme.onSurface
+                Icons.Default.Menu,
+                contentDescription = "Menu",
+                tint = MaterialTheme.colorScheme.onSurface
             )
         }
 
         // Title with Colored Span simulation
         Row {
             Text(
-                    text = "Toko ",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
+                text = "Toko ",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                    text = "Pak Adam",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary
+                text = "Pak Adam",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
             )
         }
 
         IconButton(onClick = { /* TODO: Toggle Dark Mode */}) {
             Icon(
-                    Icons.Default.Nightlight,
-                    contentDescription = "Dark Mode",
-                    tint = MaterialTheme.colorScheme.onSurface
+                Icons.Default.Nightlight,
+                contentDescription = "Dark Mode",
+                tint = MaterialTheme.colorScheme.onSurface
             )
         }
     }

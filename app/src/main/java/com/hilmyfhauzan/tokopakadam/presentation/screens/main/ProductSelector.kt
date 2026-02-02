@@ -32,22 +32,22 @@ fun ProductSelector(selectedType: ProductType, onProductSelected: (ProductType) 
         ProductType.entries.forEach { type ->
             val isSelected = selectedType == type
             val activeColor =
-                    if (type == ProductType.TOFU) MaterialTheme.colorScheme.secondary
-                    else MaterialTheme.colorScheme.primary
+				if (type == ProductType.TOFU) MaterialTheme.colorScheme.secondary
+				else MaterialTheme.colorScheme.primary
 
             Card(
-                    modifier =
-                            Modifier.weight(1f).height(60.dp).clickable { onProductSelected(type) },
-                    shape = RoundedCornerShape(12.dp),
-                    colors =
-                            CardDefaults.cardColors(
-                                    containerColor = MaterialTheme.colorScheme.surface
-                            ),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-                    elevation =
-                            CardDefaults.cardElevation(
-                                    defaultElevation = if (isSelected) 4.dp else 0.dp
-                            )
+				modifier =
+					Modifier.weight(1f).height(60.dp).clickable { onProductSelected(type) },
+				shape = RoundedCornerShape(12.dp),
+				colors =
+					CardDefaults.cardColors(
+						containerColor = MaterialTheme.colorScheme.surface
+					),
+				border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+				elevation =
+					CardDefaults.cardElevation(
+						defaultElevation = if (isSelected) 4.dp else 0.dp
+					)
             ) {
                 Row(modifier = Modifier.fillMaxSize()) {
                     // Colored Strip on Left
@@ -56,35 +56,35 @@ fun ProductSelector(selectedType: ProductType, onProductSelected: (ProductType) 
                     }
 
                     Column(
-                            modifier = Modifier.fillMaxSize().padding(4.dp),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
+                        modifier = Modifier.fillMaxSize().padding(4.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         // Split name "Telur Kecil" -> "Telur" & "Kecil"
                         val words = type.displayName.split(" ")
                         if (words.size > 1) {
                             Text(
-                                    text = words[0],
-                                    fontSize = 10.sp,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                text = words[0],
+                                fontSize = 10.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Text(
-                                    text = words[1],
-                                    fontSize = 12.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSurface
+                                text = words[1],
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                         } else {
                             Text(
-                                    text = "LAINNYA",
-                                    fontSize = 10.sp,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                text = "LAINNYA",
+                                fontSize = 10.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Text(
-                                    text = words[0],
-                                    fontSize = 12.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSurface
+                                text = words[0],
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }

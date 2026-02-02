@@ -115,90 +115,90 @@ fun NumpadButton(text: String, onClick: () -> Unit) {
     val isEnter = text == "ENTER"
 
     val containerColor =
-            if (isEnter) MaterialTheme.colorScheme.primary // primary
-            else if (isSpecial) MaterialTheme.colorScheme.primaryContainer // primaryContainer
-            else if (isClear) MaterialTheme.colorScheme.errorContainer // errorContainer
-            else if (isBack) MaterialTheme.colorScheme.secondaryContainer // secondaryContainer
-            else MaterialTheme.colorScheme.surface
+        if (isEnter) MaterialTheme.colorScheme.primary
+        else if (isSpecial) MaterialTheme.colorScheme.primaryContainer
+        else if (isClear) MaterialTheme.colorScheme.errorContainer
+        else if (isBack) MaterialTheme.colorScheme.secondaryContainer
+        else MaterialTheme.colorScheme.surface
 
     val contentColor =
-            if (isEnter) MaterialTheme.colorScheme.onPrimary
-            else if (isSpecial) MaterialTheme.colorScheme.onPrimaryContainer
-            else if (isClear) MaterialTheme.colorScheme.error
-            else if (isBack) MaterialTheme.colorScheme.onSurface
-            else MaterialTheme.colorScheme.onSurface
+        if (isEnter) MaterialTheme.colorScheme.onPrimary
+        else if (isSpecial) MaterialTheme.colorScheme.onPrimaryContainer
+        else if (isClear) MaterialTheme.colorScheme.error
+        else if (isBack) MaterialTheme.colorScheme.onSurface
+        else MaterialTheme.colorScheme.onSurface
 
     Card(
-            onClick = onClick,
-            shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = containerColor),
-            border =
-                    if (!isEnter) BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-                    else null,
-            modifier = Modifier.fillMaxSize() // Fill grid cell
+        onClick = onClick,
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = containerColor),
+        border =
+            if (!isEnter) BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+            else null,
+        modifier = Modifier.fillMaxSize() // Fill grid cell
     ) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             when {
                 isBack ->
-                        Icon(
-                                Icons.AutoMirrored.Rounded.Backspace,
-                                contentDescription = "Back",
-                                tint = MaterialTheme.colorScheme.onSecondaryContainer
-                        )
+                    Icon(
+                        Icons.AutoMirrored.Rounded.Backspace,
+                        contentDescription = "Back",
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
                 isClear -> {
                     if (text == "CE") {
                         Text(
-                                "CE",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.error
+                            "CE",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.error
                         )
                     } else {
                         Icon(
-                                Icons.Default.Close,
-                                contentDescription = "Clear",
-                                tint = MaterialTheme.colorScheme.error
+                            Icons.Default.Close,
+                            contentDescription = "Clear",
+                            tint = MaterialTheme.colorScheme.error
                         )
                     }
                 }
                 isSpecial ->
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            if (text.contains("0.5") || text.contains("1/2")) {
-                                Text(
-                                        "1/2 RAK",
-                                        fontSize = 12.sp,
-                                        color = contentColor,
-                                        fontWeight = FontWeight.Bold
-                                )
-                            } else {
-                                Icon(
-                                        Icons.Default.Check,
-                                        contentDescription = null,
-                                        tint = contentColor,
-                                        modifier = Modifier.size(16.dp)
-                                )
-                                Text(
-                                        "RAK",
-                                        fontSize = 12.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = contentColor
-                                )
-                            }
-                        }
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    if (text.contains("0.5") || text.contains("1/2")) {
+                        Text(
+                            "1/2 RAK",
+                            fontSize = 12.sp,
+                            color = contentColor,
+                            fontWeight = FontWeight.Bold
+                        )
+                    } else {
+                        Icon(
+                            Icons.Default.Check,
+                            contentDescription = null,
+                            tint = contentColor,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Text(
+                            "RAK",
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = contentColor
+                        )
+                    }
+                }
                 isEnter ->
-                        Text(
-                                "ENTER",
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onPrimary
-                        )
+                    Text(
+                        "ENTER",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
                 else ->
-                        Text(
-                                text = text,
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = contentColor
-                        )
+                    Text(
+                        text = text,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = contentColor
+                    )
             }
         }
     }

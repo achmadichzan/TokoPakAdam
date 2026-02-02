@@ -29,79 +29,79 @@ import com.hilmyfhauzan.tokopakadam.presentation.navigation.Route
 
 @Composable
 fun DrawerContent(currentRoute: Route = Route.Main, onNavigate: (Route) -> Unit) {
-        ModalDrawerSheet(modifier = Modifier.width(240.dp)) {
-                Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-                        Text(
-                                text = "Toko Pak Adam",
-                                style = MaterialTheme.typography.headlineSmall,
-                                modifier = Modifier.padding(bottom = 24.dp)
-                        )
+    ModalDrawerSheet(modifier = Modifier.width(240.dp)) {
+        Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+            Text(
+                text = "Toko Pak Adam",
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(bottom = 24.dp)
+            )
 
-                        DrawerItem(
-                                icon = Icons.Default.Home,
-                                label = "Beranda",
-                                isSelected = currentRoute == Route.Main,
-                                onClick = { onNavigate(Route.Main) }
-                        )
-                        DrawerItem(
-                                icon = Icons.Default.History,
-                                label = "Riwayat",
-                                isSelected = currentRoute == Route.History,
-                                onClick = { onNavigate(Route.History) }
-                        )
-                        DrawerItem(
-                                icon = Icons.Default.Inventory,
-                                label = "Stok",
-                                isSelected = currentRoute == Route.Stock,
-                                onClick = { onNavigate(Route.Stock) }
-                        )
-                        DrawerItem(
-                                icon = Icons.Default.MoneyOff,
-                                label = "Hutang",
-                                isSelected = currentRoute == Route.Debt,
-                                onClick = { onNavigate(Route.Debt) }
-                        )
-                        DrawerItem(
-                                icon = Icons.Default.Settings,
-                                label = "Pengaturan",
-                                isSelected = currentRoute == Route.Settings,
-                                onClick = { onNavigate(Route.Settings) }
-                        )
-                }
+            DrawerItem(
+                icon = Icons.Default.Home,
+                label = "Beranda",
+                isSelected = currentRoute == Route.Main,
+                onClick = { onNavigate(Route.Main) }
+            )
+            DrawerItem(
+                icon = Icons.Default.History,
+                label = "Riwayat",
+                isSelected = currentRoute == Route.History,
+                onClick = { onNavigate(Route.History) }
+            )
+            DrawerItem(
+                icon = Icons.Default.Inventory,
+                label = "Stok",
+                isSelected = currentRoute == Route.Stock,
+                onClick = { onNavigate(Route.Stock) }
+            )
+            DrawerItem(
+                icon = Icons.Default.MoneyOff,
+                label = "Hutang",
+                isSelected = currentRoute == Route.Debt,
+                onClick = { onNavigate(Route.Debt) }
+            )
+            DrawerItem(
+                icon = Icons.Default.Settings,
+                label = "Pengaturan",
+                isSelected = currentRoute == Route.Settings,
+                onClick = { onNavigate(Route.Settings) }
+            )
         }
+    }
 }
 
 @Composable
 fun DrawerItem(icon: ImageVector, label: String, isSelected: Boolean, onClick: () -> Unit) {
-        Row(
-                modifier =
-                        Modifier.fillMaxWidth()
-                                .clickable(onClick = onClick)
-                                .padding(vertical = 12.dp, horizontal = 8.dp)
-                                .background(
-                                        if (isSelected)
-                                                MaterialTheme.colorScheme.primaryContainer.copy(
-                                                        alpha = 0.5f
-                                                )
-                                        else Color.Transparent,
-                                        shape = MaterialTheme.shapes.small
-                                ),
-                verticalAlignment = Alignment.CenterVertically
-        ) {
-                Icon(
-                        imageVector = icon,
-                        contentDescription = label,
-                        tint =
-                                if (isSelected) MaterialTheme.colorScheme.primary
-                                else MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Spacer(modifier = Modifier.width(16.dp))
-                Text(
-                        text = label,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color =
-                                if (isSelected) MaterialTheme.colorScheme.primary
-                                else MaterialTheme.colorScheme.onSurface
-                )
-        }
+    Row(
+        modifier =
+            Modifier.fillMaxWidth()
+                .clickable(onClick = onClick)
+                .padding(vertical = 12.dp, horizontal = 8.dp)
+                .background(
+                    if (isSelected)
+                        MaterialTheme.colorScheme.primaryContainer.copy(
+                            alpha = 0.5f
+                        )
+                    else Color.Transparent,
+                    shape = MaterialTheme.shapes.small
+                ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = label,
+            tint =
+                if (isSelected) MaterialTheme.colorScheme.primary
+                else MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.width(16.dp))
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyLarge,
+            color =
+                if (isSelected) MaterialTheme.colorScheme.primary
+                else MaterialTheme.colorScheme.onSurface
+        )
+    }
 }
