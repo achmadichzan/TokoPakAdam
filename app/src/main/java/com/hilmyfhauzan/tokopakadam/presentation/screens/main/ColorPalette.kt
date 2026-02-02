@@ -1,4 +1,4 @@
-package com.hilmyfhauzan.tokopakadam.presentation.screens.home
+package com.hilmyfhauzan.tokopakadam.presentation.screens.main
 
 import androidx.compose.ui.graphics.Color
 

@@ -30,11 +30,9 @@ val appModule = module {
     // Provide DAO dari Database instance
     single { get<AppDatabase>().transactionDao() }
 
-
     // --- 2. Repository (Singleton) ---
     // singleOf dengan bind<> otomatis menghubungkan Interface ke Implementation
     singleOf(::TransactionRepositoryImpl) { bind<TransactionRepository>() }
-
 
     // --- 3. Use Cases (Factory: Dibuat baru setiap kali dibutuhkan ViewModel) ---
     // factoryOf otomatis mencari dependency yang dibutuhkan di constructor UseCase
@@ -42,5 +40,5 @@ val appModule = module {
     factoryOf(::InsertTransactionUseCase)
 
     // Nanti ViewModel juga didaftarkan di sini
-     viewModelOf(::MainViewModel)
+    viewModelOf(::MainViewModel)
 }

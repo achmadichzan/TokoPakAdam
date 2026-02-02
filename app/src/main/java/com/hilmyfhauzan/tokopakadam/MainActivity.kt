@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
-import com.hilmyfhauzan.tokopakadam.presentation.screens.home.HomeScreen
+import com.hilmyfhauzan.tokopakadam.presentation.screens.main.MainScreen
 import com.hilmyfhauzan.tokopakadam.presentation.ui.theme.TokoPakAdamTheme
 
 class MainActivity : ComponentActivity() {
@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val windowSize = calculateWindowSizeClass(this)
-            TokoPakAdamTheme { HomeScreen(widthSizeClass = windowSize.widthSizeClass) }
+            TokoPakAdamTheme { MainScreen(widthSizeClass = windowSize.widthSizeClass) }
         }
     }
 }

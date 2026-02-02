@@ -1,4 +1,4 @@
-package com.hilmyfhauzan.tokopakadam.presentation.screens.home
+package com.hilmyfhauzan.tokopakadam.presentation.screens.main
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun HomeTopBar() {
+fun MainTopBar() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -35,13 +35,13 @@ fun HomeTopBar() {
         // Title with Colored Span simulation
         Row {
             Text(
-                text = "Kasir ",
+                text = "Toko ",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = TextBlack
             )
             Text(
-                text = "Telur & Tahu",
+                text = "Pak Adam",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = PrimaryOrange

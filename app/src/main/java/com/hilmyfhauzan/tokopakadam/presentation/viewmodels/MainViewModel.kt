@@ -84,11 +84,11 @@ class MainViewModel(private val insertTransactionUseCase: InsertTransactionUseCa
         if (uiState.value.selectedProduct.isEgg) {
             val currentQty = uiState.value.quantities[uiState.value.selectedProduct] ?: 0.0
             val newQty =
-                    if (uiState.value.isLastInputFromNumpad) {
-                        currentQty * 15.0
-                    } else {
-                        currentQty + 15.0
-                    }
+                if (uiState.value.isLastInputFromNumpad) {
+                    currentQty * 15.0
+                } else {
+                    currentQty + 15.0
+                }
             updateQtyValue(newQty)
             _uiState.update { it.copy(isLastInputFromNumpad = false) }
         }
@@ -99,11 +99,11 @@ class MainViewModel(private val insertTransactionUseCase: InsertTransactionUseCa
         if (uiState.value.selectedProduct.isEgg) {
             val currentQty = uiState.value.quantities[uiState.value.selectedProduct] ?: 0.0
             val newQty =
-                    if (uiState.value.isLastInputFromNumpad) {
-                        currentQty * 30.0
-                    } else {
-                        currentQty + 30.0
-                    }
+                if (uiState.value.isLastInputFromNumpad) {
+                    currentQty * 30.0
+                } else {
+                    currentQty + 30.0
+                }
             updateQtyValue(newQty)
             _uiState.update { it.copy(isLastInputFromNumpad = false) }
         }
@@ -125,25 +125,25 @@ class MainViewModel(private val insertTransactionUseCase: InsertTransactionUseCa
 
             // Konversi Map Quantity ke List<TransactionItem> Domain
             val items =
-                    currentState.quantities.filter { it.value > 0 }.map { (type, qty) ->
-                        TransactionItem(
-                                productType = type,
-                                quantity = qty,
-                                unit = type.defaultUnit(),
-                                pricePerUnit = type.pricePerPiece, // Ambil langsung dari Enum
-                                subTotal = (qty * type.pricePerPiece).toLong()
-                        )
-                    }
+                currentState.quantities.filter { it.value > 0 }.map { (type, qty) ->
+                    TransactionItem(
+                        productType = type,
+                        quantity = qty,
+                        unit = type.defaultUnit(),
+                        pricePerUnit = type.pricePerPiece, // Ambil langsung dari Enum
+                        subTotal = (qty * type.pricePerPiece).toLong()
+                    )
+                }
 
             val transaction =
-                    Transaction(
-                            timestamp = System.currentTimeMillis(),
-                            customerName = customerName?.ifBlank { null }, // Handle string kosong
-                            items = items,
-                            totalPrice = currentState.totalBelanja,
-                            amountPaid = currentState.cashInput,
-                            note = null // Bisa ditambah kalau ada field catatan
-                    )
+                Transaction(
+                    timestamp = System.currentTimeMillis(),
+                    customerName = customerName?.ifBlank { null }, // Handle string kosong
+                    items = items,
+                    totalPrice = currentState.totalBelanja,
+                    amountPaid = currentState.cashInput,
+                    note = null // Bisa ditambah kalau ada field catatan
+                )
 
             try {
                 insertTransactionUseCase(transaction)
@@ -171,11 +171,11 @@ class MainViewModel(private val insertTransactionUseCase: InsertTransactionUseCa
 
         // Ubah double ke string tanpa .0 (misal 5.0 jadi "5")
         val currentString =
-                if (currentQty % 1.0 == 0.0) {
-                    currentQty.toLong().toString()
-                } else {
-                    currentQty.toString()
-                }
+            if (currentQty % 1.0 == 0.0) {
+                currentQty.toLong().toString()
+            } else {
+                currentQty.toString()
+            }
 
         val newString = transform(currentString)
         val newQty = newString.toDoubleOrNull() ?: 0.0
@@ -187,7 +187,7 @@ class MainViewModel(private val insertTransactionUseCase: InsertTransactionUseCa
         _uiState.update { state ->
             // Update map quantities
             val newQuantities =
-                    state.quantities.toMutableMap().apply { put(state.selectedProduct, value) }
+                state.quantities.toMutableMap().apply { put(state.selectedProduct, value) }
             state.copy(quantities = newQuantities)
         }
     }

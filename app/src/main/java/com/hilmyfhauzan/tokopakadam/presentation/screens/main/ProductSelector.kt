@@ -1,4 +1,4 @@
-package com.hilmyfhauzan.tokopakadam.presentation.screens.home
+package com.hilmyfhauzan.tokopakadam.presentation.screens.main
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -46,7 +46,7 @@ fun ProductSelector(
                     .clickable { onProductSelected(type) },
                 shape = RoundedCornerShape(12.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
-                border = if (isSelected) BorderStroke(2.dp, activeColor) else BorderStroke(1.dp, Color.LightGray),
+                border = BorderStroke(1.dp, Color.LightGray),
                 elevation = CardDefaults.cardElevation(defaultElevation = if (isSelected) 4.dp else 0.dp)
             ) {
                 Row(modifier = Modifier.fillMaxSize()) {

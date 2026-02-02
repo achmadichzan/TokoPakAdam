@@ -4,9 +4,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class ProductType(
-        val displayName: String,
-        val pricePerPiece: Long, // Harga per butir/biji
-        val isEgg: Boolean // Helper untuk membedakan Telur & Tahu
+    val displayName: String,
+    val pricePerPiece: Long, // Harga per butir/biji
+    val isEgg: Boolean // Helper untuk membedakan Telur & Tahu
 ) {
     EGG_SMALL("Telur Kecil", 1800L, true),
     EGG_MEDIUM("Telur Sedang", 1900L, true),
