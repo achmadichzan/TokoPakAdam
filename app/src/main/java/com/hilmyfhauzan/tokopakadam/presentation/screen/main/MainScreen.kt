@@ -216,7 +216,10 @@ fun MainScreen(
 
                         TransactionSummarySection(
                             state = state,
-                            onActiveInputChanged = viewModel::setActiveInput,
+                            onActiveInputChanged = { newInput ->
+                                viewModel.setActiveInput(newInput)
+                                isNumpadVisible = true
+                            },
                             onClearAll = viewModel::clearAllTransaction
                         )
                         Spacer(modifier = Modifier.height(350.dp))
