@@ -1,5 +1,7 @@
 package com.hilmyfhauzan.tokopakadam.presentation.screen.component
 
+import com.hilmyfhauzan.tokopakadam.presentation.ui.theme.LocalThemePreference
+import com.hilmyfhauzan.tokopakadam.presentation.ui.theme.LocalThemeToggle
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -8,6 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Nightlight
+import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.BrightnessAuto
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +30,9 @@ fun AppTopBar(
     onDrawerClick: () -> Unit,
     actions: @Composable RowScope.() -> Unit = {}
 ) {
+    val themePreference = LocalThemePreference.current
+    val onToggleTheme = LocalThemeToggle.current
+
     Row(
         modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -62,6 +70,18 @@ fun AppTopBar(
         }
 
         Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = onToggleTheme) {
+                val icon = when (themePreference) {
+                    true -> Icons.Default.Nightlight
+                    false -> Icons.Default.LightMode
+                    null -> Icons.Default.BrightnessAuto
+                }
+                Icon(
+                    imageVector = icon,
+                    contentDescription = "Theme Toggle",
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
+            }
             actions()
         }
     }

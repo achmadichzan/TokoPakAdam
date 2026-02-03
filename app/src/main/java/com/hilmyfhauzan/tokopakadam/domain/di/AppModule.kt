@@ -8,6 +8,11 @@ import com.hilmyfhauzan.tokopakadam.domain.usecase.GetTransactionsUseCase
 import com.hilmyfhauzan.tokopakadam.domain.usecase.InsertTransactionUseCase
 import com.hilmyfhauzan.tokopakadam.presentation.viewmodel.MainViewModel
 import com.hilmyfhauzan.tokopakadam.presentation.viewmodel.HistoryViewModel
+import com.hilmyfhauzan.tokopakadam.presentation.viewmodel.ThemeViewModel
+import com.hilmyfhauzan.tokopakadam.domain.repository.UserPreferencesRepository
+import com.hilmyfhauzan.tokopakadam.data.repository.UserPreferencesRepositoryImpl
+import com.hilmyfhauzan.tokopakadam.domain.usecase.GetThemeUseCase
+import com.hilmyfhauzan.tokopakadam.domain.usecase.SetThemeUseCase
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
@@ -39,8 +44,14 @@ val appModule = module {
     // factoryOf otomatis mencari dependency yang dibutuhkan di constructor UseCase
     factoryOf(::GetTransactionsUseCase)
     factoryOf(::InsertTransactionUseCase)
+    factoryOf(::GetThemeUseCase)
+    factoryOf(::SetThemeUseCase)
+
+    // --- 4. User Preferences ---
+    single<UserPreferencesRepository> { UserPreferencesRepositoryImpl(androidContext()) }
 
     // Nanti ViewModel juga didaftarkan di sini
     viewModelOf(::MainViewModel)
     viewModelOf(::HistoryViewModel)
+    viewModelOf(::ThemeViewModel)
 }

@@ -53,7 +53,7 @@ fun TransactionSummarySection(
             borderColor =
                 if (state.activeInput == ActiveInput.QUANTITY)
                     MaterialTheme.colorScheme.primary
-                else null,
+                else MaterialTheme.colorScheme.outlineVariant,
             onClick = { onActiveInputChanged(ActiveInput.QUANTITY) }
         )
 

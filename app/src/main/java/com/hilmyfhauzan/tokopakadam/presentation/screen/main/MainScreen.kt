@@ -20,12 +20,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Nightlight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -54,9 +52,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hilmyfhauzan.tokopakadam.presentation.navigation.Route
-import com.hilmyfhauzan.tokopakadam.presentation.screen.component.SideMenu
 import com.hilmyfhauzan.tokopakadam.presentation.screen.component.AppTopBar
 import com.hilmyfhauzan.tokopakadam.presentation.screen.component.DrawerContent
+import com.hilmyfhauzan.tokopakadam.presentation.screen.component.SideMenu
 import com.hilmyfhauzan.tokopakadam.presentation.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
@@ -108,16 +106,7 @@ fun MainScreen(
                 if (!isTablet) {
                     AppTopBar(
                         title = "Toko Pak Adam",
-                        onDrawerClick = { scope.launch { drawerState.open() } },
-                        actions = {
-                            IconButton(onClick = { /* TODO: Toggle Dark Mode */ }) {
-                                Icon(
-                                    Icons.Default.Nightlight,
-                                    contentDescription = "Dark Mode",
-                                    tint = MaterialTheme.colorScheme.onSurface
-                                )
-                            }
-                        }
+                        onDrawerClick = { scope.launch { drawerState.open() } }
                     )
                 }
             }
@@ -230,6 +219,7 @@ fun MainScreen(
                             onActiveInputChanged = viewModel::setActiveInput,
                             onClearAll = viewModel::clearAllTransaction
                         )
+                        Spacer(modifier = Modifier.height(350.dp))
                     }
 
                     // Bottom Content (Numpad & Button)
