@@ -59,6 +59,7 @@ fun HistoryScreen(
     val historyState by viewModel.historyState.collectAsStateWithLifecycle()
     val totalSalesToday by viewModel.totalSalesToday.collectAsStateWithLifecycle()
     val currentFilter by viewModel.currentFilter.collectAsStateWithLifecycle()
+    val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val listState =  rememberLazyListState()
@@ -113,7 +114,10 @@ fun HistoryScreen(
                 Column(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    SearchBarSection()
+                    SearchBarSection(
+                        query = searchQuery,
+                        onQueryChange = viewModel::onSearchQueryChange
+                    )
                     FilterSection(
                         currentFilter = currentFilter,
                         onFilterSelected = viewModel::setFilter

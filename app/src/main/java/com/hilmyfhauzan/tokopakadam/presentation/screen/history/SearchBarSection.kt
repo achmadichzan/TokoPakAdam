@@ -12,21 +12,19 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SearchBarSection() {
-    var text by remember { mutableStateOf("") }
+fun SearchBarSection(
+    query: String,
+    onQueryChange: (String) -> Unit
+) {
     TextField(
-        value = text,
-        onValueChange = { text = it },
+        value = query,
+        onValueChange = onQueryChange,
         placeholder = { Text("Cari transaksi...", color = MaterialTheme.colorScheme.onSurfaceVariant) },
         leadingIcon = {
             Icon(

@@ -25,6 +25,9 @@ class HistoryViewModel(
     private val _currentFilter = MutableStateFlow(HistoryFilter.TODAY)
     val currentFilter: StateFlow<HistoryFilter> = _currentFilter.asStateFlow()
 
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+
     private val dateFormatter = SimpleDateFormat("EEEE, dd MMM yyyy", Locale("id", "ID"))
     private val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
 
@@ -38,8 +41,9 @@ class HistoryViewModel(
 
     val historyState: StateFlow<List<HistoryTransaction>> = combine(
         allTransactions,
-        _currentFilter
-    ) { transactions, filter ->
+        _currentFilter,
+        _searchQuery
+    ) { transactions, filter, query ->
         val filteredTransactions = transactions.filter { transaction ->
             when (filter) {
                 HistoryFilter.TODAY -> isToday(transaction.timestamp)
@@ -48,6 +52,20 @@ class HistoryViewModel(
                 HistoryFilter.LAST_30_DAYS -> isLast30Days(transaction.timestamp)
                 HistoryFilter.ALL -> true
             }
+        }.filter { transaction ->
+            if (query.isBlank()) return@filter true
+            
+            val queryLower = query.lowercase()
+            val matchesCustomer = transaction.customerName?.lowercase()?.contains(queryLower) == true
+            val matchesPayment = transaction.amountPaid >= transaction.totalPrice && "tunai".contains(queryLower) ||
+                    transaction.amountPaid < transaction.totalPrice && "hutang".contains(queryLower)
+            
+            // Note: Efficiently searching items might require a joined string or iteration
+            val matchesItems = transaction.items.any { item -> 
+                item.productType.displayName.lowercase().contains(queryLower) 
+            }
+
+            matchesCustomer || matchesPayment || matchesItems
         }
         filteredTransactions.map { it.toHistoryUiModel() }
     }.stateIn(
@@ -71,6 +89,10 @@ class HistoryViewModel(
 
     fun setFilter(filter: HistoryFilter) {
         _currentFilter.value = filter
+    }
+
+    fun onSearchQueryChange(query: String) {
+        _searchQuery.value = query
     }
 
     private fun Transaction.toHistoryUiModel(): HistoryTransaction {
