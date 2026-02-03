@@ -83,7 +83,7 @@ fun HistoryScreen(
                     title = "Riwayat Penjualan",
                     onDrawerClick = { scope.launch { drawerState.open() } },
                     actions = {
-                        IconButton(onClick = { /* TODO: Add Transaction */ }) {
+                        IconButton(onClick = { onNavigate(Route.Main) }) {
                             Box(
                                 modifier = Modifier
                                     .size(32.dp)
