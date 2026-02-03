@@ -29,7 +29,10 @@ import com.hilmyfhauzan.tokopakadam.presentation.navigation.Route
 
 @Composable
 fun DrawerContent(currentRoute: Route, onNavigate: (Route) -> Unit) {
-    ModalDrawerSheet(modifier = Modifier.width(240.dp)) {
+    ModalDrawerSheet(
+        modifier = Modifier.width(240.dp),
+        drawerContainerColor = MaterialTheme.colorScheme.surface
+    ) {
         Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
             Text(
                 text = "Toko Pak Adam",
