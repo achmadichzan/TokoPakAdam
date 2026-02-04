@@ -11,6 +11,7 @@ import com.hilmyfhauzan.tokopakadam.presentation.viewmodel.HistoryViewModel
 import com.hilmyfhauzan.tokopakadam.presentation.viewmodel.ThemeViewModel
 import com.hilmyfhauzan.tokopakadam.domain.repository.UserPreferencesRepository
 import com.hilmyfhauzan.tokopakadam.data.repository.UserPreferencesRepositoryImpl
+import com.hilmyfhauzan.tokopakadam.domain.usecase.DeleteTransactionUseCase
 import com.hilmyfhauzan.tokopakadam.domain.usecase.GetThemeUseCase
 import com.hilmyfhauzan.tokopakadam.domain.usecase.SetThemeUseCase
 import org.koin.android.ext.koin.androidContext
@@ -44,6 +45,7 @@ val appModule = module {
     // factoryOf otomatis mencari dependency yang dibutuhkan di constructor UseCase
     factoryOf(::GetTransactionsUseCase)
     factoryOf(::InsertTransactionUseCase)
+    factoryOf(::DeleteTransactionUseCase)
     factoryOf(::GetThemeUseCase)
     factoryOf(::SetThemeUseCase)
 

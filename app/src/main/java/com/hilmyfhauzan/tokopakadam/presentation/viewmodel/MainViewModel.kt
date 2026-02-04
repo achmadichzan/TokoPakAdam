@@ -6,6 +6,7 @@ import com.hilmyfhauzan.tokopakadam.domain.model.ProductType
 import com.hilmyfhauzan.tokopakadam.domain.model.Transaction
 import com.hilmyfhauzan.tokopakadam.domain.model.TransactionItem
 import com.hilmyfhauzan.tokopakadam.domain.usecase.InsertTransactionUseCase
+import com.hilmyfhauzan.tokopakadam.domain.usecase.DeleteTransactionUseCase
 import com.hilmyfhauzan.tokopakadam.presentation.state.ActiveInput
 import com.hilmyfhauzan.tokopakadam.presentation.state.MainUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,10 +15,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val insertTransactionUseCase: InsertTransactionUseCase) : ViewModel() {
+class MainViewModel(
+    private val insertTransactionUseCase: InsertTransactionUseCase,
+    private val deleteTransactionUseCase: DeleteTransactionUseCase
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MainUiState())
     val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
+
+    private var lastSavedTransaction: Transaction? = null
+    private var previousUiState: MainUiState? = null
 
     // --- EVENT HANDLERS (Fungsi yang dipanggil dari UI) ---
 
@@ -146,13 +153,38 @@ class MainViewModel(private val insertTransactionUseCase: InsertTransactionUseCa
                 )
 
             try {
-                insertTransactionUseCase(transaction)
+                val id = insertTransactionUseCase(transaction)
+                lastSavedTransaction = transaction.copy(id = id)
+                previousUiState = currentState // Simpan state sebelum di-reset
+
                 // Reset UI setelah sukses
                 _uiState.update {
                     MainUiState(isTransactionSaved = true) // Reset ke state awal + flag success
                 }
             } catch (e: Exception) {
                 _uiState.update { it.copy(isLoading = false, errorMessage = e.message) }
+            }
+        }
+    }
+
+    fun undoLastTransaction() {
+        viewModelScope.launch {
+            lastSavedTransaction?.let { transaction ->
+                try {
+                    deleteTransactionUseCase(transaction)
+                    // Restore state sebelumnya (mengembalikan quantity & inputan user)
+                    previousUiState?.let { oldState ->
+                        _uiState.update {
+                            oldState.copy(
+                                isTransactionSaved = false, // Pastikan flag tidak true lagi
+                                isLoading = false
+                            )
+                        }
+                    }
+                    lastSavedTransaction = null
+                } catch (e: Exception) {
+                     _uiState.update { it.copy(errorMessage = "Gagal membatalkan: ${e.message}") }
+                }
             }
         }
     }

@@ -26,11 +26,18 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,6 +63,9 @@ import com.hilmyfhauzan.tokopakadam.presentation.screen.component.AppTopBar
 import com.hilmyfhauzan.tokopakadam.presentation.screen.component.DrawerContent
 import com.hilmyfhauzan.tokopakadam.presentation.screen.component.SideMenu
 import com.hilmyfhauzan.tokopakadam.presentation.viewmodel.MainViewModel
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -88,6 +98,39 @@ fun MainScreen(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     var showConfirmationDialog by retain { mutableStateOf(false) }
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(Unit) {
+        viewModel.uiState
+            .map { it.isTransactionSaved }
+            .distinctUntilChanged()
+            .filter { it }
+            .collect {
+                // Consume event immediately so state resets
+                viewModel.onTransactionSavedConsumed()
+                
+                // Launch independent job for snackbar so it persists even after state reset
+                launch {
+                    val result = snackbarHostState.showSnackbar(
+                        message = "Data Transaksi Berhasil Disimpan",
+                        actionLabel = "BATALKAN",
+                        duration = SnackbarDuration.Long
+                    )
+                    if (result == SnackbarResult.ActionPerformed) {
+                        viewModel.undoLastTransaction()
+                    }
+                }
+            }
+    }
+
+    LaunchedEffect(state.errorMessage) {
+        state.errorMessage?.let { error ->
+            snackbarHostState.showSnackbar(
+                message = "Gagal: $error",
+                duration = SnackbarDuration.Long
+            )
+        }
+    }
 
     if (showConfirmationDialog) {
         TransactionConfirmationDialog(
@@ -114,6 +157,37 @@ fun MainScreen(
     ) {
         Scaffold(
             containerColor = MaterialTheme.colorScheme.background,
+            snackbarHost = {
+                SnackbarHost(hostState = snackbarHostState) { data ->
+                    Snackbar(
+                        modifier = Modifier.padding(12.dp),
+                        action = {
+                            data.visuals.actionLabel?.let { actionLabel ->
+                                TextButton(
+                                    onClick = { data.performAction() }
+                                ) {
+                                    Text(
+                                        text = actionLabel,
+                                        color = MaterialTheme.colorScheme.inversePrimary
+                                    )
+                                }
+                            }
+                        },
+                        dismissAction = {
+                            TextButton(
+                                onClick = { data.dismiss() }
+                            ) {
+                                Text(
+                                    text = "TUTUP",
+                                    color = MaterialTheme.colorScheme.inversePrimary
+                                )
+                            }
+                        }
+                    ) {
+                        Text(data.visuals.message)
+                    }
+                }
+            },
             topBar = {
                 if (!isTablet) {
                     AppTopBar(
