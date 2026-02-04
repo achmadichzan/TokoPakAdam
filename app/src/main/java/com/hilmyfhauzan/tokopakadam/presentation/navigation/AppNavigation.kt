@@ -15,10 +15,14 @@ import com.hilmyfhauzan.tokopakadam.presentation.screen.main.MainScreen
 import kotlinx.serialization.Serializable
 
 @Composable
-fun AppNavigation(widthSizeClass: WindowWidthSizeClass) {
+fun AppNavigation(
+    modifier: Modifier,
+    widthSizeClass: WindowWidthSizeClass
+) {
     val nacController = rememberNavController()
 
     NavHost(
+        modifier = modifier,
         navController = nacController,
         startDestination = Route.Main
     ) {

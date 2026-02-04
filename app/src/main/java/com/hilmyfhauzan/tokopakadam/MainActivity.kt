@@ -9,6 +9,8 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.keepScreenOn
 import com.hilmyfhauzan.tokopakadam.presentation.navigation.AppNavigation
 import com.hilmyfhauzan.tokopakadam.presentation.ui.theme.TokoPakAdamTheme
 import com.hilmyfhauzan.tokopakadam.presentation.viewmodel.ThemeViewModel
@@ -29,7 +31,10 @@ class MainActivity : ComponentActivity() {
                 themePreference = themeState, // Pass the raw nullable state
                 onToggleTheme = themeViewModel::toggleTheme
             ) {
-                AppNavigation(widthSizeClass = windowSize.widthSizeClass)
+                AppNavigation(
+                    modifier = Modifier.keepScreenOn(),
+                    widthSizeClass = windowSize.widthSizeClass
+                )
             }
         }
     }
