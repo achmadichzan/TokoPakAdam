@@ -67,8 +67,9 @@ class HistoryViewModel(
             val matchesItems = transaction.items.any { item ->
                 item.productType.displayName.lowercase().contains(queryLower)
             }
+            val matchesNote = transaction.note?.lowercase()?.contains(queryLower) == true
 
-            matchesCustomer || matchesPayment || matchesItems
+            matchesCustomer || matchesPayment || matchesItems || matchesNote
         }
         filteredTransactions.map { it.toHistoryUiModel() }
     }.stateIn(

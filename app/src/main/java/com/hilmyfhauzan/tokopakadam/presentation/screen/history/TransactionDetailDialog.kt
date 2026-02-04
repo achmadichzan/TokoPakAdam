@@ -158,7 +158,8 @@ fun TransactionDetailDialog(
 
                     DropdownMenu(
                         expanded = isStatusExpanded,
-                        onDismissRequest = { isStatusExpanded = false }
+                        onDismissRequest = { isStatusExpanded = false },
+                        containerColor = MaterialTheme.colorScheme.surface                        
                     ) {
                         TransactionStatus.entries.forEach { item ->
                             DropdownMenuItem(
@@ -196,7 +197,8 @@ fun TransactionDetailDialog(
 
                     DropdownMenu(
                         expanded = isPaymentExpanded,
-                        onDismissRequest = { isPaymentExpanded = false }
+                        onDismissRequest = { isPaymentExpanded = false },
+                        containerColor = MaterialTheme.colorScheme.surface 
                     ) {
                         listOf("Tunai", "Transfer Bank").forEach { item ->
                             DropdownMenuItem(

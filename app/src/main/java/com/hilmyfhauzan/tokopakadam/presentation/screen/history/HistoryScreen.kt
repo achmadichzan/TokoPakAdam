@@ -36,6 +36,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Surface
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -115,14 +120,49 @@ fun HistoryScreen(
                 Column(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    SearchBarSection(
-                        query = searchQuery,
-                        onQueryChange = viewModel::onSearchQueryChange
-                    )
-                    FilterSection(
-                        currentFilter = currentFilter,
-                        onFilterSelected = viewModel::setFilter
-                    )
+                    var isSearchExpanded by remember { mutableStateOf(false) }
+
+                    if (isSearchExpanded) {
+                        SearchBarSection(
+                            query = searchQuery,
+                            onQueryChange = viewModel::onSearchQueryChange,
+                            onClose = {
+                                viewModel.onSearchQueryChange("")
+                                isSearchExpanded = false
+                            }
+                        )
+                    } else {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            FilterSection(
+                                currentFilter = currentFilter,
+                                onFilterSelected = viewModel::setFilter,
+                                modifier = Modifier.weight(1f)
+                            )
+                            
+                            // Search Icon Chip
+                            Surface(
+                                shape = CircleShape,
+                                color = MaterialTheme.colorScheme.surface,
+                                onClick = { isSearchExpanded = true },
+                                modifier = Modifier.size(32.dp)
+                            ) {
+                                Box(contentAlignment = Alignment.Center) {
+                                    Icon(
+                                        imageVector = Icons.Default.Search,
+                                        contentDescription = "Search",
+                                        tint = MaterialTheme.colorScheme.onSurface,
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                }
+                            }
+                        }
+                    }
                     
                     if (historyState.isEmpty()) {
                          Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
