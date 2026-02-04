@@ -11,5 +11,6 @@ data class HistoryTransaction(
     val cash: Long,
     val remainingDebt: Long,
     val change: Long,
-    val status: TransactionStatus
+    val status: TransactionStatus,
+    val note: String?
 )

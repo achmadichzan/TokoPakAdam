@@ -26,6 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -125,11 +126,13 @@ fun HistoryScreen(
                     
                     if (historyState.isEmpty()) {
                          Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                             androidx.compose.material3.Text("Belum ada riwayat transaksi")
+                             Text("Belum ada riwayat transaksi")
                          }
                     } else {
                         LaunchedEffect(listState) {
-                            snapshotFlow { listState.firstVisibleItemIndex to listState.firstVisibleItemScrollOffset }
+                            snapshotFlow {
+                                listState.firstVisibleItemIndex to listState.firstVisibleItemScrollOffset
+                            }
                                 .distinctUntilChanged()
                                 // Menggunakan runningFold untuk menyimpan "state sebelumnya" (index, offset)
                                 .runningFold(Pair(0, 0)) { previous, current ->
@@ -137,7 +140,9 @@ fun HistoryScreen(
                                     val (currentIndex, currentScroll) = current
 
                                     val isAtTop = currentIndex == 0 && currentScroll == 0
-                                    val isScrollingDown = currentIndex > lastIndex || (currentIndex == lastIndex && currentScroll > lastScroll)
+                                    val isScrollingDown =
+                                        currentIndex > lastIndex || (currentIndex ==
+                                            lastIndex && currentScroll > lastScroll)
 
                                     isBottomBarVisible = when {
                                         isAtTop -> true
@@ -157,14 +162,18 @@ fun HistoryScreen(
                                 .padding(horizontal = 16.dp),
                             contentPadding = PaddingValues(bottom = 100.dp)
                         ) {
-                            val groupedTransactions = historyState.groupBy { transaction -> transaction.date }
+                            val groupedTransactions =
+                                historyState.groupBy { transaction -> transaction.date }
                             
                             groupedTransactions.forEach { (date, transactions) ->
                                 item {
                                     SectionHeader(title = date.uppercase())
                                 }
                                 items(transactions) { transaction ->
-                                    TransactionItemCard(transaction)
+                                    TransactionItemCard(
+                                        transaction = transaction,
+                                        onUpdate = viewModel::updateTransaction
+                                    )
                                     Spacer(modifier = Modifier.height(12.dp))
                                 }
                             }

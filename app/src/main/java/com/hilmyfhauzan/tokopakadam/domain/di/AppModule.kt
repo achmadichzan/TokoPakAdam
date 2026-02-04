@@ -12,6 +12,7 @@ import com.hilmyfhauzan.tokopakadam.presentation.viewmodel.ThemeViewModel
 import com.hilmyfhauzan.tokopakadam.domain.repository.UserPreferencesRepository
 import com.hilmyfhauzan.tokopakadam.data.repository.UserPreferencesRepositoryImpl
 import com.hilmyfhauzan.tokopakadam.domain.usecase.DeleteTransactionUseCase
+import com.hilmyfhauzan.tokopakadam.domain.usecase.UpdateTransactionUseCase
 import com.hilmyfhauzan.tokopakadam.domain.usecase.GetThemeUseCase
 import com.hilmyfhauzan.tokopakadam.domain.usecase.SetThemeUseCase
 import org.koin.android.ext.koin.androidContext
@@ -46,6 +47,7 @@ val appModule = module {
     factoryOf(::GetTransactionsUseCase)
     factoryOf(::InsertTransactionUseCase)
     factoryOf(::DeleteTransactionUseCase)
+    factoryOf(::UpdateTransactionUseCase)
     factoryOf(::GetThemeUseCase)
     factoryOf(::SetThemeUseCase)
 

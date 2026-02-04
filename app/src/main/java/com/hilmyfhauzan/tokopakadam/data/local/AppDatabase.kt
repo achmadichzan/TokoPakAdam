@@ -10,7 +10,7 @@ import com.hilmyfhauzan.tokopakadam.data.local.entity.TransactionEntity
 @Database(
     entities = [TransactionEntity::class],
     version = 1,
-    exportSchema = false // Ubah true jika ingin export skema JSON (opsional)
+    exportSchema = true // Ubah true jika ingin export skema JSON
 )
 // Jangan lupa daftarkan Converters di sini
 @TypeConverters(TransactionConverters::class)

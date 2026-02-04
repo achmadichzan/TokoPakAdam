@@ -105,7 +105,9 @@ fun TransactionConfirmationDialog(
                             style = MaterialTheme.typography.bodyMedium
                         )
                         Text(
-                            text = if (state.cashInput == 0L) "-" else formatRupiah(state.cashInput),
+                            text =
+                                if (state.cashInput == 0L) "-"
+                                else formatRupiah(state.cashInput),
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Bold
                         )
@@ -189,6 +191,6 @@ fun TransactionConfirmationDialog(
                 Text("BATAL")
             }
         },
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = MaterialTheme.colorScheme.surface
     )
 }

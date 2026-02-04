@@ -6,6 +6,7 @@ import com.hilmyfhauzan.tokopakadam.domain.model.HistoryTransaction
 import com.hilmyfhauzan.tokopakadam.domain.model.Transaction
 import com.hilmyfhauzan.tokopakadam.domain.model.TransactionStatus
 import com.hilmyfhauzan.tokopakadam.domain.usecase.GetTransactionsUseCase
+import com.hilmyfhauzan.tokopakadam.domain.usecase.UpdateTransactionUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -13,13 +14,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
 class HistoryViewModel(
-    getTransactionsUseCase: GetTransactionsUseCase
+    getTransactionsUseCase: GetTransactionsUseCase,
+    private val updateTransactionUseCase: UpdateTransactionUseCase
 ) : ViewModel() {
 
     private val _currentFilter = MutableStateFlow(HistoryFilter.TODAY)
@@ -95,6 +98,20 @@ class HistoryViewModel(
         _searchQuery.value = query
     }
 
+    fun updateTransaction(id: String, newCustomerName: String, newCash: Long, newNote: String) {
+        viewModelScope.launch {
+            val transactionId = id.toLongOrNull() ?: return@launch
+            val currentTransaction = allTransactions.value.find { it.id == transactionId } ?: return@launch
+            
+            val updatedTransaction = currentTransaction.copy(
+                customerName = newCustomerName,
+                amountPaid = newCash,
+                note = newNote
+            )
+            updateTransactionUseCase(updatedTransaction)
+        }
+    }
+
     private fun Transaction.toHistoryUiModel(): HistoryTransaction {
         val dateObj = Date(timestamp)
         return HistoryTransaction(
@@ -108,7 +125,8 @@ class HistoryViewModel(
             cash = amountPaid,
             remainingDebt = remainingDebt,
             change = changeAmount,
-            status = if (isPaidOff) TransactionStatus.LUNAS else TransactionStatus.HUTANG
+            status = if (isPaidOff) TransactionStatus.LUNAS else TransactionStatus.HUTANG,
+            note = note
         )
     }
 
