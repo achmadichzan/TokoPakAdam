@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.hilmyfhauzan.tokopakadam.presentation.state.MainUiState
 import com.hilmyfhauzan.tokopakadam.presentation.util.formatRupiah
+import com.hilmyfhauzan.tokopakadam.presentation.util.formatRak
 
 @Composable
 fun TransactionConfirmationDialog(
@@ -60,7 +61,11 @@ fun TransactionConfirmationDialog(
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(
-                                text = "${type.displayName} (${qty.toInt()} ${type.unitName()})",
+                                text = if (type.isEgg) {
+                                    "${type.displayName} (${qty.toInt()} - ${formatRak(qty)})"
+                                } else {
+                                    "${type.displayName} (${qty.toInt()} ${type.unitName()})"
+                                },
                                 style = MaterialTheme.typography.bodyMedium
                             )
                             Text(

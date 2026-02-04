@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.hilmyfhauzan.tokopakadam.presentation.state.ActiveInput
 import com.hilmyfhauzan.tokopakadam.presentation.state.MainUiState
 import com.hilmyfhauzan.tokopakadam.presentation.util.formatRupiah
+import com.hilmyfhauzan.tokopakadam.presentation.util.formatRak
 
 @Composable
 fun TransactionSummarySection(
@@ -84,7 +85,7 @@ fun TransactionSummarySection(
                         horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End)
                     ) {
                         Text(
-                            text = type.displayName,
+                            text = if (type.isEgg) "${type.displayName} (${formatRak(qty)})" else type.displayName,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
