@@ -46,7 +46,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -190,7 +189,7 @@ fun MainScreen(
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
                                         text = "SIMPAN",
-                                        fontSize = 18.sp,
+                                        style = MaterialTheme.typography.bodyLarge,
                                         fontWeight = FontWeight.Bold,
                                         color = MaterialTheme.colorScheme.onPrimary
                                     )
@@ -227,48 +226,48 @@ fun MainScreen(
 
                     // Bottom Content (Numpad & Button)
                     AnimatedVisibility(
-                            visible = isNumpadVisible,
-                            enter = slideInVertically { it },
-                            exit = slideOutVertically { it },
-                            modifier = Modifier.align(Alignment.BottomCenter)
+                        visible = isNumpadVisible,
+                        enter = slideInVertically { it },
+                        exit = slideOutVertically { it },
+                        modifier = Modifier.align(Alignment.BottomCenter)
                     ) {
                         Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                             NumpadSection(
-                                    onNumberClick = viewModel::onNumpadClick,
-                                    onBackspaceClick = viewModel::onBackspaceClick,
-                                    onClearClick = viewModel::onClearClick,
-                                    onHalfTrayClick = viewModel::onHalfTrayClick,
-                                    onOneTrayClick = viewModel::onOneTrayClick,
-                                    isTablet = false,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(280.dp)
+                                onNumberClick = viewModel::onNumpadClick,
+                                onBackspaceClick = viewModel::onBackspaceClick,
+                                onClearClick = viewModel::onClearClick,
+                                onHalfTrayClick = viewModel::onHalfTrayClick,
+                                onOneTrayClick = viewModel::onOneTrayClick,
+                                isTablet = false,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(280.dp)
                             )
 
                             // 4. Save Button
                             Button(
-                                    onClick = { viewModel.saveTransaction() },
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(56.dp),
-                                    colors =
-                                            ButtonDefaults.buttonColors(
-                                                    containerColor =
-                                                            MaterialTheme.colorScheme.primary
-                                            ),
-                                    shape = RoundedCornerShape(12.dp)
+                                onClick = { viewModel.saveTransaction() },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(56.dp),
+                                colors =
+                                    ButtonDefaults.buttonColors(
+                                        containerColor =
+                                            MaterialTheme.colorScheme.primary
+                                    ),
+                                shape = RoundedCornerShape(12.dp)
                             ) {
                                 Icon(
-                                        Icons.Default.Check,
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.onPrimary
+                                    imageVector = Icons.Default.Check,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onPrimary
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
-                                        text = "SIMPAN",
-                                        fontSize = 18.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colorScheme.onPrimary
+                                    text = "SIMPAN",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onPrimary
                                 )
                             }
                         }

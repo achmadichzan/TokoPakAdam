@@ -23,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.hilmyfhauzan.tokopakadam.domain.model.ProductType
 
 @Composable
@@ -65,24 +64,24 @@ fun ProductSelector(selectedType: ProductType, onProductSelected: (ProductType) 
                         if (words.size > 1) {
                             Text(
                                 text = words[0],
-                                fontSize = 10.sp,
+                                style = MaterialTheme.typography.labelMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Text(
                                 text = words[1],
-                                fontSize = 12.sp,
+                                style = MaterialTheme.typography.labelLarge,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                         } else {
                             Text(
                                 text = "LAINNYA",
-                                fontSize = 10.sp,
+                                style = MaterialTheme.typography.labelMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Text(
                                 text = words[0],
-                                fontSize = 12.sp,
+                                style = MaterialTheme.typography.labelLarge,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface
                             )

@@ -27,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.hilmyfhauzan.tokopakadam.presentation.state.ActiveInput
 import com.hilmyfhauzan.tokopakadam.presentation.state.MainUiState
 import com.hilmyfhauzan.tokopakadam.presentation.util.formatRupiah
@@ -73,7 +72,7 @@ fun TransactionSummarySection(
                 ) {
                     Text(
                         text = "Detail Transaksi",
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -86,12 +85,12 @@ fun TransactionSummarySection(
                     ) {
                         Text(
                             text = type.displayName,
-                            fontSize = 14.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
                             text = "${qty.toInt()} ${type.unitName()}",
-                            fontSize = 14.sp,
+                            style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
@@ -109,7 +108,13 @@ fun TransactionSummarySection(
                         ),
                     border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
                     contentPadding = PaddingValues(0.dp)
-                ) { Text(text = "Hapus Semua", fontSize = 14.sp, fontWeight = FontWeight.SemiBold) }
+                ) {
+                    Text(
+                        text = "Hapus Semua",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
             }
         }
 
@@ -193,21 +198,21 @@ fun SummaryCard(
             ) {
                 Text(
                     text = label,
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 if (showPlaceholder) {
                     Text(
                         text = "0",
-                        fontSize = 18.sp,
+                        style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                     )
                 } else {
                     Text(
                         text = value,
-                        fontSize = 18.sp,
+                        style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
                         color = valueColor
                     )

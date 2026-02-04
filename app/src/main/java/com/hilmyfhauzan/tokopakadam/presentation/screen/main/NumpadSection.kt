@@ -24,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 @Composable
 fun NumpadSection(
@@ -149,7 +148,7 @@ fun NumpadButton(text: String, onClick: () -> Unit) {
                     if (text == "CE") {
                         Text(
                             "CE",
-                            fontSize = 20.sp,
+                            style = MaterialTheme.typography.headlineMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.error
                         )
@@ -166,7 +165,7 @@ fun NumpadButton(text: String, onClick: () -> Unit) {
                     if (text.contains("0.5") || text.contains("1/2")) {
                         Text(
                             "1/2 RAK",
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.titleMedium,
                             color = contentColor,
                             fontWeight = FontWeight.Bold
                         )
@@ -179,7 +178,7 @@ fun NumpadButton(text: String, onClick: () -> Unit) {
                         )
                         Text(
                             "RAK",
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = contentColor
                         )
@@ -188,14 +187,14 @@ fun NumpadButton(text: String, onClick: () -> Unit) {
                 isEnter ->
                     Text(
                         "ENTER",
-                        fontSize = 18.sp,
+                        style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                 else ->
                     Text(
                         text = text,
-                        fontSize = 24.sp,
+                        style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
                         color = contentColor
                     )

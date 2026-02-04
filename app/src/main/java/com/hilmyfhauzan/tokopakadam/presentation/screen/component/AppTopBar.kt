@@ -1,7 +1,5 @@
 package com.hilmyfhauzan.tokopakadam.presentation.screen.component
 
-import com.hilmyfhauzan.tokopakadam.presentation.ui.theme.LocalThemePreference
-import com.hilmyfhauzan.tokopakadam.presentation.ui.theme.LocalThemeToggle
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -9,10 +7,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BrightnessAuto
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Nightlight
-import androidx.compose.material.icons.filled.LightMode
-import androidx.compose.material.icons.filled.BrightnessAuto
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +20,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.hilmyfhauzan.tokopakadam.presentation.ui.theme.LocalThemePreference
+import com.hilmyfhauzan.tokopakadam.presentation.ui.theme.LocalThemeToggle
 
 @Composable
 fun AppTopBar(
@@ -42,7 +41,7 @@ fun AppTopBar(
             Icon(
                 Icons.Default.Menu,
                 contentDescription = "Menu",
-                tint = MaterialTheme.colorScheme.onSurface
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
 
@@ -50,20 +49,21 @@ fun AppTopBar(
             if (title == "Toko Pak Adam") {
                 Text(
                     text = "Toko ",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.headlineMedium
+                        .copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = "Pak Adam",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.headlineMedium
+                        .copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.primary
                 )
             } else {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                    style = MaterialTheme.typography.headlineMedium
+                        .copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.onSurface
                 )
             }
@@ -79,7 +79,7 @@ fun AppTopBar(
                 Icon(
                     imageVector = icon,
                     contentDescription = "Theme Toggle",
-                    tint = MaterialTheme.colorScheme.onSurface
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             actions()

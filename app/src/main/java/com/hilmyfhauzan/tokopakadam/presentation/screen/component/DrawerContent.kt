@@ -82,7 +82,7 @@ fun DrawerItem(icon: ImageVector, label: String, isSelected: Boolean, onClick: (
                 .background(
                     if (isSelected)
                         MaterialTheme.colorScheme.primaryContainer.copy(
-                            alpha = 0.5f
+                            alpha = 0.4f
                         )
                     else Color.Transparent,
                     shape = MaterialTheme.shapes.small

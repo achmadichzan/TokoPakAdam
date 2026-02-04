@@ -13,60 +13,73 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
-private val DarkColorScheme =
-    darkColorScheme(
-        primary = PrimaryOrange,
-        onPrimary = Color.White,
-        primaryContainer = DeepOrange,
-        onPrimaryContainer = LightOrange,
-        secondary = SecondaryBlue,
-        onSecondary = Color.White,
-        secondaryContainer =
-                LightBlue, // Might want darker in dark mode, but keeping simple for now
-        onSecondaryContainer = IconGray,
-        tertiary = SuccessGreen,
-        onTertiary = Color.White,
-        tertiaryContainer = SuccessGreenBg,
-        onTertiaryContainer = SuccessGreen,
-        background = Color(0xFF121212),
-        onBackground = Color.White,
-        surface = Color(0xFF1E1E1E),
-        onSurface = Color.White,
-        surfaceVariant = Color(0xFF2C2C2C),
-        onSurfaceVariant = Color.LightGray,
-        error = DangerRed,
-        onError = Color.White,
-        errorContainer = DangerRed.copy(alpha = 0.5f),
-        onErrorContainer = LightRed
-    )
+private val DarkColorScheme = darkColorScheme(
+    primary = PrimaryOrange,
+    onPrimary = Color.White,
+    primaryContainer = DeepOrange,
+    onPrimaryContainer = LightOrange,
 
-private val LightColorScheme =
-    lightColorScheme(
-        primary = PrimaryOrange,
-        onPrimary = Color.White,
-        primaryContainer = LightOrange,
-        onPrimaryContainer = DarkOrangeText,
-        secondary = SecondaryBlue,
-        onSecondary = Color.White,
-        secondaryContainer = LightBlue,
-        onSecondaryContainer = IconGray,
-        tertiary = SuccessGreen,
-        onTertiary = Color.White,
-        tertiaryContainer = SuccessGreenBg,
-        onTertiaryContainer = SuccessGreen,
-        background = BackgroundGray,
-        onBackground = TextBlack,
-        surface = Color.White,
-        onSurface = TextBlack,
-        surfaceVariant = Color.White,
-        onSurfaceVariant = TextGray,
-        error = DangerRed,
-        onError = Color.White,
-        errorContainer = LightRed,
-        onErrorContainer = DangerRed,
-        outline = TextGray.copy(alpha = 0.5f),
-        outlineVariant = Color.LightGray
-    )
+    secondary = SecondaryBlue,
+    onSecondary = Color.White,
+    secondaryContainer = DarkBlueContainer,
+    onSecondaryContainer = LightBlue,
+
+    tertiary = SuccessGreen,
+    onTertiary = Color.Black,
+    tertiaryContainer = DarkSuccessGreenContainer,
+    onTertiaryContainer = OnDarkSuccessGreenContainer,
+
+    background = DarkBackground,
+    onBackground = Color.White,
+
+    surface = DarkSurface,
+    onSurface = Color.White,
+
+    surfaceVariant = DarkSurfaceVariant,
+    onSurfaceVariant = TextGray,
+
+    error = DangerRed,
+    onError = Color.Black,
+    errorContainer = DarkRedContainer,
+    onErrorContainer = OnDarkRedContainer,
+
+    outline = OutlineDark,
+    outlineVariant = OutlineLight
+)
+
+private val LightColorScheme = lightColorScheme(
+    primary = PrimaryOrange,
+    onPrimary = Color.White,
+    primaryContainer = LightOrange,
+    onPrimaryContainer = DarkOrangeText,
+
+    secondary = SecondaryBlue,
+    onSecondary = Color.White,
+    secondaryContainer = LightBlue,
+    onSecondaryContainer = IconGray,
+
+    tertiary = SuccessGreen,
+    onTertiary = Color.White,
+    tertiaryContainer = LightSuccessGreen,
+    onTertiaryContainer = SuccessGreen,
+
+    background = BackgroundGray,
+    onBackground = TextBlack,
+
+    surface = Color.White,
+    onSurface = TextBlack,
+
+    surfaceVariant = Color.White,
+    onSurfaceVariant = TextGray,
+
+    error = DangerRed,
+    onError = Color.White,
+    errorContainer = LightRed,
+    onErrorContainer = DangerRed,
+
+    outline = TextGray,
+    outlineVariant = OutlineLight
+)
 
 @Composable
 fun TokoPakAdamTheme(
