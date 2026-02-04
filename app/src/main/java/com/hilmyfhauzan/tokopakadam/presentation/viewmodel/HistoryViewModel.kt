@@ -54,15 +54,15 @@ class HistoryViewModel(
             }
         }.filter { transaction ->
             if (query.isBlank()) return@filter true
-            
+
             val queryLower = query.lowercase()
             val matchesCustomer = transaction.customerName?.lowercase()?.contains(queryLower) == true
             val matchesPayment = transaction.amountPaid >= transaction.totalPrice && "tunai".contains(queryLower) ||
                     transaction.amountPaid < transaction.totalPrice && "hutang".contains(queryLower)
-            
+
             // Note: Efficiently searching items might require a joined string or iteration
-            val matchesItems = transaction.items.any { item -> 
-                item.productType.displayName.lowercase().contains(queryLower) 
+            val matchesItems = transaction.items.any { item ->
+                item.productType.displayName.lowercase().contains(queryLower)
             }
 
             matchesCustomer || matchesPayment || matchesItems

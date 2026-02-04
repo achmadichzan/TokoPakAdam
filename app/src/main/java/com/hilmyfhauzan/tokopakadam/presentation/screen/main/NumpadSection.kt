@@ -27,77 +27,75 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun NumpadSection(
-        modifier: Modifier = Modifier,
-        onNumberClick: (String) -> Unit,
-        onBackspaceClick: () -> Unit,
-        onClearClick: () -> Unit,
-        onHalfTrayClick: () -> Unit,
-        onOneTrayClick: () -> Unit,
-        onSave: () -> Unit = {},
-        isTablet: Boolean = false
+    modifier: Modifier = Modifier,
+    onNumberClick: (String) -> Unit,
+    onBackspaceClick: () -> Unit,
+    onClearClick: () -> Unit,
+    onHalfTrayClick: () -> Unit,
+    onOneTrayClick: () -> Unit,
+    isTablet: Boolean = false
 ) {
     val buttons =
-            if (isTablet) {
-                listOf(
-                        "7",
-                        "8",
-                        "9",
-                        "⌫",
-                        "4",
-                        "5",
-                        "6",
-                        "CE",
-                        "1",
-                        "2",
-                        "3",
-                        "1/2 RAK",
-                        "00",
-                        "0",
-                        "000",
-                        "RAK"
-                )
-            } else {
-                listOf(
-                        "7",
-                        "8",
-                        "9",
-                        "BACK",
-                        "4",
-                        "5",
-                        "6",
-                        "CE",
-                        "1",
-                        "2",
-                        "3",
-                        "1/2 RAK",
-                        "00",
-                        "0",
-                        "000",
-                        "RAK"
-                )
-            }
+        if (isTablet) {
+            listOf(
+                "7",
+                "8",
+                "9",
+                "⌫",
+                "4",
+                "5",
+                "6",
+                "CE",
+                "1",
+                "2",
+                "3",
+                "1/2 RAK",
+                "00",
+                "0",
+                "000",
+                "RAK"
+            )
+        } else {
+            listOf(
+                "7",
+                "8",
+                "9",
+                "BACK",
+                "4",
+                "5",
+                "6",
+                "CE",
+                "1",
+                "2",
+                "3",
+                "1/2 RAK",
+                "00",
+                "0",
+                "000",
+                "RAK"
+            )
+        }
 
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
         val rows = buttons.chunked(4) // 4x4 Grid -> 4 items per row
         rows.forEach { rowItems ->
             Row(
-                    modifier = Modifier.fillMaxWidth().weight(1f),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                modifier = Modifier.fillMaxWidth().weight(1f),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 rowItems.forEach { btn ->
                     Box(modifier = Modifier.weight(1f).fillMaxHeight()) {
                         NumpadButton(
-                                text = btn,
-                                onClick = {
-                                    when (btn) {
-                                        "BACK", "⌫" -> onBackspaceClick()
-                                        "CLEAR", "CE" -> onClearClick()
-                                        "0.5 RAK", "1/2 RAK" -> onHalfTrayClick()
-                                        "RAK" -> onOneTrayClick()
-                                        "ENTER" -> onSave()
-                                        else -> onNumberClick(btn)
-                                    }
+                            text = btn,
+                            onClick = {
+                                when (btn) {
+                                    "BACK", "⌫" -> onBackspaceClick()
+                                    "CLEAR", "CE" -> onClearClick()
+                                    "0.5 RAK", "1/2 RAK" -> onHalfTrayClick()
+                                    "RAK" -> onOneTrayClick()
+                                    else -> onNumberClick(btn)
                                 }
+                            }
                         )
                     }
                 }
@@ -111,18 +109,15 @@ fun NumpadButton(text: String, onClick: () -> Unit) {
     val isSpecial = text == "0.5 RAK" || text == "RAK" || text == "1/2 RAK"
     val isClear = text == "CLEAR" || text == "CE"
     val isBack = text == "BACK" || text == "⌫"
-    val isEnter = text == "ENTER"
 
     val containerColor =
-        if (isEnter) MaterialTheme.colorScheme.primary
-        else if (isSpecial) MaterialTheme.colorScheme.primaryContainer
+        if (isSpecial) MaterialTheme.colorScheme.primaryContainer
         else if (isClear) MaterialTheme.colorScheme.errorContainer
         else if (isBack) MaterialTheme.colorScheme.secondaryContainer
         else MaterialTheme.colorScheme.surface
 
     val contentColor =
-        if (isEnter) MaterialTheme.colorScheme.onPrimary
-        else if (isSpecial) MaterialTheme.colorScheme.onPrimaryContainer
+        if (isSpecial) MaterialTheme.colorScheme.onPrimaryContainer
         else if (isClear) MaterialTheme.colorScheme.error
         else if (isBack) MaterialTheme.colorScheme.onSurface
         else MaterialTheme.colorScheme.onSurface
@@ -131,9 +126,7 @@ fun NumpadButton(text: String, onClick: () -> Unit) {
         onClick = onClick,
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = containerColor),
-        border =
-            if (!isEnter) BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-            else null,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         modifier = Modifier.fillMaxSize() // Fill grid cell
     ) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -184,13 +177,6 @@ fun NumpadButton(text: String, onClick: () -> Unit) {
                         )
                     }
                 }
-                isEnter ->
-                    Text(
-                        "ENTER",
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
                 else ->
                     Text(
                         text = text,

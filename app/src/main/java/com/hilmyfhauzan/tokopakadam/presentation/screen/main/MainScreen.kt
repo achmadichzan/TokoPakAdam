@@ -19,7 +19,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.automirrored.filled.KeyboardReturn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DrawerValue
@@ -35,6 +35,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.retain.retain
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -86,6 +87,18 @@ fun MainScreen(
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    var showConfirmationDialog by retain { mutableStateOf(false) }
+
+    if (showConfirmationDialog) {
+        TransactionConfirmationDialog(
+            state = state,
+            onDismiss = { showConfirmationDialog = false },
+            onConfirm = { name, note ->
+                viewModel.saveTransaction(name, note)
+                showConfirmationDialog = false
+            }
+        )
+    }
 
     SideMenu(
         drawerState = drawerState,
@@ -161,7 +174,6 @@ fun MainScreen(
                                     onClearClick = viewModel::onClearClick,
                                     onHalfTrayClick = viewModel::onHalfTrayClick,
                                     onOneTrayClick = viewModel::onOneTrayClick,
-                                    onSave = viewModel::saveTransaction,
                                     isTablet = true,
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -170,7 +182,11 @@ fun MainScreen(
 
                                 // Save Button for Tablet
                                 Button(
-                                    onClick = { viewModel.saveTransaction() },
+                                    onClick = { 
+                                         if (state.totalBelanja > 0) {
+                                            showConfirmationDialog = true 
+                                         }
+                                    },
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .height(56.dp),
@@ -182,14 +198,14 @@ fun MainScreen(
                                     shape = RoundedCornerShape(12.dp)
                                 ) {
                                     Icon(
-                                        Icons.Default.Check,
+                                        Icons.AutoMirrored.Filled.KeyboardReturn,
                                         contentDescription = null,
                                         tint = MaterialTheme.colorScheme.onPrimary
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
-                                        text = "SIMPAN",
-                                        style = MaterialTheme.typography.bodyLarge,
+                                        text = "ENTER",
+                                        style = MaterialTheme.typography.headlineMedium,
                                         fontWeight = FontWeight.Bold,
                                         color = MaterialTheme.colorScheme.onPrimary
                                     )
@@ -225,13 +241,16 @@ fun MainScreen(
                     }
 
                     // Bottom Content (Numpad & Button)
-                    AnimatedVisibility(
-                        visible = isNumpadVisible,
-                        enter = slideInVertically { it },
-                        exit = slideOutVertically { it },
-                        modifier = Modifier.align(Alignment.BottomCenter)
+                    Column(
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                        AnimatedVisibility(
+                            visible = isNumpadVisible,
+                            enter = slideInVertically { it },
+                            exit = slideOutVertically { it }
+                        ) {
                             NumpadSection(
                                 onNumberClick = viewModel::onNumpadClick,
                                 onBackspaceClick = viewModel::onBackspaceClick,
@@ -243,33 +262,37 @@ fun MainScreen(
                                     .fillMaxWidth()
                                     .height(280.dp)
                             )
-
-                            // 4. Save Button
-                            Button(
-                                onClick = { viewModel.saveTransaction() },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(56.dp),
-                                colors =
-                                    ButtonDefaults.buttonColors(
-                                        containerColor =
-                                            MaterialTheme.colorScheme.primary
-                                    ),
-                                shape = RoundedCornerShape(12.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Check,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onPrimary
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = "SIMPAN",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onPrimary
-                                )
-                            }
+                        }
+                        
+                        // 4. Enter Button (Always visible)
+                        Button(
+                            onClick = { 
+                                if (state.totalBelanja > 0) {
+                                    showConfirmationDialog = true 
+                                }
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(56.dp),
+                            colors =
+                                ButtonDefaults.buttonColors(
+                                    containerColor =
+                                        MaterialTheme.colorScheme.primary
+                                ),
+                            shape = RoundedCornerShape(12.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.KeyboardReturn,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onPrimary
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "ENTER",
+                                style = MaterialTheme.typography.headlineMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
                         }
                     }
                 }

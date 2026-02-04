@@ -116,7 +116,7 @@ class MainViewModel(private val insertTransactionUseCase: InsertTransactionUseCa
     }
 
     // 8. Simpan Transaksi
-    fun saveTransaction(customerName: String? = null) {
+    fun saveTransaction(customerName: String? = null, note: String? = null) {
         val currentState = _uiState.value
         if (currentState.totalBelanja == 0L) return // Jangan simpan kalau kosong
 
@@ -142,7 +142,7 @@ class MainViewModel(private val insertTransactionUseCase: InsertTransactionUseCa
                     items = items,
                     totalPrice = currentState.totalBelanja,
                     amountPaid = currentState.cashInput,
-                    note = null // Bisa ditambah kalau ada field catatan
+                    note = note?.ifBlank { null } // Handle string kosong
                 )
 
             try {
