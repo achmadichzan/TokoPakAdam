@@ -1,6 +1,8 @@
 package com.hilmyfhauzan.tokopakadam.presentation.screen.history
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -127,12 +129,30 @@ fun TransactionItemCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Text(
-                text = transaction.items,
-                style = MaterialTheme.typography.titleMedium
-                    .copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.onSurface
-            )
+            @OptIn(ExperimentalLayoutApi::class)
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                transaction.items.split(",").forEach { rawItem ->
+                    val item = rawItem.trim()
+                    if (item.isNotEmpty()) {
+                        Surface(
+                            shape = RoundedCornerShape(4.dp),
+                            color = MaterialTheme.colorScheme.surface,
+                            shadowElevation = 1.dp
+                        ) {
+                            Text(
+                                text = item,
+                                style = MaterialTheme.typography.bodyMedium
+                                    .copy(fontWeight = FontWeight.Medium),
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                            )
+                        }
+                    }
+                }
+            }
 
             if (transaction.customerName != null) {
                 Spacer(modifier = Modifier.height(8.dp))
