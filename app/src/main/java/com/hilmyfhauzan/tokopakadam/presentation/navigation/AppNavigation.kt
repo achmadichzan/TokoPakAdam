@@ -10,8 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.hilmyfhauzan.tokopakadam.presentation.screen.history.HistoryScreen
 import com.hilmyfhauzan.tokopakadam.presentation.screen.main.MainScreen
+import com.hilmyfhauzan.tokopakadam.presentation.screen.history.HistoryScreen
+import com.hilmyfhauzan.tokopakadam.presentation.screen.debt.DebtScreen
 import kotlinx.serialization.Serializable
 
 @Composable
@@ -57,7 +58,17 @@ fun AppNavigation(
             PlaceholderScreen("Stock")
         }
         composable<Route.Debt> {
-            PlaceholderScreen("Debt")
+            DebtScreen(
+                onNavigate = { route ->
+                    nacController.navigate(route) {
+                        popUpTo(nacController.graph.startDestinationId) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
         }
         composable<Route.Settings> {
             PlaceholderScreen("Settings")

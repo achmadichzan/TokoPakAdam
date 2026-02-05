@@ -1,4 +1,4 @@
-package com.hilmyfhauzan.tokopakadam.presentation.screen.history
+package com.hilmyfhauzan.tokopakadam.presentation.screen.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -36,8 +36,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.hilmyfhauzan.tokopakadam.domain.model.HistoryTransaction
 import com.hilmyfhauzan.tokopakadam.domain.model.TransactionStatus
-import com.hilmyfhauzan.tokopakadam.presentation.util.formatRupiah
 import com.hilmyfhauzan.tokopakadam.presentation.util.CurrencyVisualTransformation
+import com.hilmyfhauzan.tokopakadam.presentation.util.formatRupiah
 
 @Composable
 fun TransactionDetailDialog(

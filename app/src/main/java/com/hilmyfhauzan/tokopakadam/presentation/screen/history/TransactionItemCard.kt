@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.hilmyfhauzan.tokopakadam.domain.model.HistoryTransaction
 import com.hilmyfhauzan.tokopakadam.domain.model.TransactionStatus
+import com.hilmyfhauzan.tokopakadam.presentation.screen.component.TransactionDetailDialog
 import com.hilmyfhauzan.tokopakadam.presentation.util.formatRupiah
 
 @Composable

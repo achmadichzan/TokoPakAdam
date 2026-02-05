@@ -9,6 +9,7 @@ import com.hilmyfhauzan.tokopakadam.domain.usecase.InsertTransactionUseCase
 import com.hilmyfhauzan.tokopakadam.presentation.viewmodel.MainViewModel
 import com.hilmyfhauzan.tokopakadam.presentation.viewmodel.HistoryViewModel
 import com.hilmyfhauzan.tokopakadam.presentation.viewmodel.ThemeViewModel
+import com.hilmyfhauzan.tokopakadam.presentation.viewmodel.DebtViewModel
 import com.hilmyfhauzan.tokopakadam.domain.repository.UserPreferencesRepository
 import com.hilmyfhauzan.tokopakadam.data.repository.UserPreferencesRepositoryImpl
 import com.hilmyfhauzan.tokopakadam.domain.usecase.DeleteTransactionUseCase
@@ -57,5 +58,6 @@ val appModule = module {
     // Nanti ViewModel juga didaftarkan di sini
     viewModelOf(::MainViewModel)
     viewModelOf(::HistoryViewModel)
+    viewModelOf(::DebtViewModel)
     viewModelOf(::ThemeViewModel)
 }

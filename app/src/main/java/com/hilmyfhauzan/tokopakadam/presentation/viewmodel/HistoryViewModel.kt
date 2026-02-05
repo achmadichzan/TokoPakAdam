@@ -2,6 +2,7 @@ package com.hilmyfhauzan.tokopakadam.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hilmyfhauzan.tokopakadam.domain.model.HistoryFilter
 import com.hilmyfhauzan.tokopakadam.domain.model.HistoryTransaction
 import com.hilmyfhauzan.tokopakadam.domain.model.Transaction
 import com.hilmyfhauzan.tokopakadam.domain.model.TransactionStatus
@@ -31,7 +32,10 @@ class HistoryViewModel(
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
-    private val dateFormatter = SimpleDateFormat("EEEE, dd MMM yyyy", Locale("id", "ID"))
+    private val dateFormatter = SimpleDateFormat(
+        "EEEE, dd MMM yyyy",
+        Locale.forLanguageTag("id-ID")
+    )
     private val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
 
     // Source of truth for transactions
@@ -173,8 +177,4 @@ class HistoryViewModel(
     private fun Double.toIntOrString(): String {
         return if (this % 1.0 == 0.0) this.toLong().toString() else this.toString()
     }
-}
-
-enum class HistoryFilter {
-    TODAY, YESTERDAY, LAST_7_DAYS, LAST_30_DAYS, ALL
 }

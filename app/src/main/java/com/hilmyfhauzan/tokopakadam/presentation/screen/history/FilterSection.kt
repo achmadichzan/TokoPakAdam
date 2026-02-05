@@ -3,7 +3,6 @@ package com.hilmyfhauzan.tokopakadam.presentation.screen.history
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -11,22 +10,22 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Sort
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.hilmyfhauzan.tokopakadam.presentation.viewmodel.HistoryFilter
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import com.hilmyfhauzan.tokopakadam.domain.model.HistoryFilter
 
 @Composable
 fun FilterSection(
@@ -57,7 +56,11 @@ fun FilterSection(
         Box {
             Surface(
                 shape = RoundedCornerShape(20.dp),
-                color = if (currentFilter == HistoryFilter.ALL || currentFilter == HistoryFilter.LAST_30_DAYS) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surface,
+                color =
+                    if (currentFilter == HistoryFilter.ALL ||
+                        currentFilter == HistoryFilter.LAST_30_DAYS)
+                        MaterialTheme.colorScheme.secondary
+                    else MaterialTheme.colorScheme.surface,
                 modifier = Modifier.height(32.dp).width(48.dp),
                 onClick = { sortMenuExpanded = true }
             ) {
@@ -65,7 +68,11 @@ fun FilterSection(
                     Icon(
                         imageVector = Icons.AutoMirrored.Default.Sort,
                         contentDescription = "Filter",
-                        tint = if (currentFilter == HistoryFilter.ALL || currentFilter == HistoryFilter.LAST_30_DAYS) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurface,
+                        tint =
+                            if (currentFilter == HistoryFilter.ALL ||
+                                currentFilter == HistoryFilter.LAST_30_DAYS)
+                                MaterialTheme.colorScheme.onSecondary
+                            else MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.size(16.dp)
                     )
                 }
@@ -98,7 +105,9 @@ fun FilterSection(
 fun FilterChipItem(text: String, selected: Boolean, onClick: () -> Unit) {
     Surface(
         shape = RoundedCornerShape(20.dp),
-        color = if (selected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surface,
+        color =
+            if (selected) MaterialTheme.colorScheme.secondary
+            else MaterialTheme.colorScheme.surface,
         modifier = Modifier.height(32.dp),
         onClick = onClick
     ) {
@@ -110,7 +119,9 @@ fun FilterChipItem(text: String, selected: Boolean, onClick: () -> Unit) {
                 Text(
                     text = text,
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-                    color = if (selected) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurface
+                    color =
+                        if (selected) MaterialTheme.colorScheme.onSecondary
+                        else MaterialTheme.colorScheme.onSurface
                 )
             }
         }
