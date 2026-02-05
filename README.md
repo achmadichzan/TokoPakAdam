@@ -6,8 +6,8 @@ Aplikasi manajemen transaksi toko yang modern dan efisien, dibangun dengan tekno
 
 | POS / Home | Riwayat Transaksi | Konfirmasi Transaksi |
 |:---:|:---:|:---:|
-| ![Home](docs/images/screenshot_1.jpg) | ![History](docs/images/screenshot_2.jpg) | ![Confirm](docs/images/screenshot_3.jpg) |
-| ![Detail](docs/images/screenshot_4.jpg) | ![Input](docs/images/screenshot_5.jpg) | ![Numpad](docs/images/screenshot_6.jpg) |
+| ![Home](docs/images/screenshot_1.jpg) | ![History](docs/images/screenshot_5.jpg) | ![Confirm](docs/images/screenshot_2.jpg) |
+| ![Detail](docs/images/screenshot_3.jpg) | ![Input](docs/images/screenshot_4.jpg) | ![Numpad](docs/images/screenshot_6.jpg) |
 
 
 
